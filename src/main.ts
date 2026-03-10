@@ -39,24 +39,25 @@ function App(): NixTemplate {
 
     // --- Demo Form ---
     const form = createForm({
-        initialValues: {
-            username: "",
-            email: "",
-            bio: "",
-            country: "",
-            agreeTerms: false,
-            newsletter: true,
-        },
+        username: "",
+        email: "",
+        bio: "",
+        country: "",
+        agreeTerms: false,
+        newsletter: true,
+    }, {
         validators: {
-            username: validators.required("Username is required"),
-            email: (v: unknown) => {
-                if (typeof v !== 'string' || !v) return "Email is required";
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return "Invalid email pattern";
-                return null;
-            },
-            bio: validators.maxLength(100, "Bio max 100 chars"),
-            country: validators.required("Please select your country"),
-            agreeTerms: (v: unknown) => v ? null : "You must agree to the terms",
+            username: [validators.required("Username is required")],
+            email: [
+                (v: unknown) => {
+                    if (typeof v !== 'string' || !v) return "Email is required";
+                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return "Invalid email pattern";
+                    return null;
+                }
+            ],
+            bio: [validators.maxLength(100, "Bio max 100 chars")],
+            country: [validators.required("Please select your country")],
+            agreeTerms: [(v: unknown) => v ? null : "You must agree to the terms"],
         }
     });
 
@@ -71,20 +72,46 @@ function App(): NixTemplate {
         isSubmitting.value = false;
     });
 
-    const f = form.fields as typeof form.fields & {
-        username: any;
-        email: any;
-        bio: any;
-        country: any;
-        agreeTerms: any;
-        newsletter: any;
-    };
+    const f = form.fields;
 
     return html`
-        <main class="min-h-screen bg-nix-surface p-8">
-            <div class="max-w-3xl mx-auto">
-                <h1 class="text-3xl font-bold text-nix-text mb-2">❄️ Nix UI</h1>
-                <p class="text-nix-text-muted mb-8">Component library for Nix.js — Tailwind CSS + vanilla CSS ready</p>
+        <main class="min-h-screen bg-nix-surface pb-16">
+            <!-- Hero Section -->
+            <div class="bg-nix-bg border-b border-nix-border px-8 py-16 mb-12 shadow-sm relative overflow-hidden">
+                <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5QzkyQUMiIGZpbGwtb3BhY2l0eT0iMSI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoLTR2Mmg0djRoMnYtNGg0di0yaC00em0wLTMwVjBoLTJ2NGgtNHYyaDR2NGgyVjZoNHYtMmgtNHpNNiAzNHYtNEg0djRIMGYyaDR2NGgydi00aDR2LTJINnpNNiA0VjBINFY0SDB2Mmg0djRoMlY2aDRWNEg2eiIvPjwvZz48L2c+PC9zdmc+')"></div>
+                <div class="max-w-4xl mx-auto relative z-10 text-center">
+                    <span class="inline-block py-1 px-3 rounded-nix-full bg-nix-primary/10 text-nix-primary text-sm font-semibold mb-4 border border-nix-primary/20">
+                        v1.0.1 Ready
+                    </span>
+                    <h1 class="text-5xl font-extrabold text-nix-text mb-4 tracking-tight">
+                        ❄️ Nix UI
+                    </h1>
+                    <p class="text-xl text-nix-text-muted max-w-2xl mx-auto leading-relaxed">
+                        A beautiful, reactive component library for <strong class="text-nix-text font-semibold">Nix.js</strong>. 
+                        Built with Tailwind CSS, fully accessible, and deeply integrated with reactive signals.
+                    </p>
+                    <div class="mt-8 flex justify-center gap-4">
+                        ${Button({
+                            variant: "primary",
+                            size: "lg",
+                            children: "Get Started",
+                            onClick: () => {
+                                window.location.href = "https://www.npmjs.com/package/@deijose/nix-ui";
+                            },
+                        })}
+                        ${Button({
+                            variant: "outline",
+                            size: "lg",
+                            children: "GitHub Repo",
+                            onClick: () => {
+                                window.open("https://github.com/DeijoseDevelop/nix-js", "_blank");
+                            },
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto px-6">
 
                 <!-- Buttons -->
                 ${Section("Button", html`
@@ -261,6 +288,33 @@ function App(): NixTemplate {
                         ],
                         defaultOpen: ["a1"],
                     })}
+                `)}
+
+                <!-- Toasts -->
+                ${Section("Toasts", html`
+                    <p class="text-sm text-nix-text-muted mb-4">Click the buttons below to trigger toast notifications.</p>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        ${Button({ 
+                            variant: "outline", 
+                            onClick: () => showToast.info("System update available", { title: "Heads up!" }),
+                            children: "Info Toast" 
+                        })}
+                        ${Button({ 
+                            variant: "primary", 
+                            onClick: () => showToast.success("Profile saved successfully!", { title: "Success" }),
+                            children: "Success Toast" 
+                        })}
+                        ${Button({ 
+                            variant: "danger", 
+                            onClick: () => showToast.error("Failed to connect to the server.", { title: "Error" }),
+                            children: "Error Toast" 
+                        })}
+                        ${Button({ 
+                            variant: "ghost", 
+                            onClick: () => showToast.warning("Your session will expire in 5 minutes.", { title: "Warning" }),
+                            children: "Warning Toast" 
+                        })}
+                    </div>
                 `)}
 
                 <!-- Modal -->

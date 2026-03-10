@@ -1,6 +1,6 @@
 {
     "name": "@deijose/nix-ui",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "A component library for Nix.js — Tailwind CSS powered with vanilla CSS escape hatch.",
     "keywords": [
         "ui",
@@ -50,7 +50,8 @@
         "build:lib": "vite build --config vite.lib.config.ts && tsc --project tsconfig.lib.json && terser dist/lib/nix-ui.js -c -m -o dist/lib/nix-ui.js && terser dist/lib/nix-ui.cjs -c -m -o dist/lib/nix-ui.cjs",
         "preview": "vite preview",
         "typecheck": "tsc --noEmit",
-        "prepublishOnly": "npm run build:lib && cp README.md .readme-full.md && cp .readme-npm.md README.md",
+        "test": "vitest run",
+        "prepublishOnly": "bun run build:lib && cp README.md .readme-full.md && cp .readme-npm.md README.md",
         "postpublish": "mv .readme-full.md README.md"
     },
     "peerDependencies": {
@@ -61,10 +62,12 @@
         "@types/node": "^25.4.0"
     },
     "devDependencies": {
-        "terser": "^5.46.0",
         "@tailwindcss/vite": "^4.2.1",
+        "happy-dom": "^20.8.3",
         "tailwindcss": "^4.2.1",
+        "terser": "^5.46.0",
         "typescript": "~5.9.3",
-        "vite": "^8.0.0-beta.13"
+        "vite": "^8.0.0-beta.13",
+        "vitest": "^4.0.18"
     }
 }
