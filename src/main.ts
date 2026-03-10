@@ -104,7 +104,7 @@ function App(): NixTemplate {
                             size: "lg",
                             children: "GitHub Repo",
                             onClick: () => {
-                                window.open("https://github.com/DeijoseDevelop/nix-js", "_blank");
+                                window.open("https://github.com/DeijoseDevelop/nix-ui", "_blank");
                             },
                         })}
                     </div>
