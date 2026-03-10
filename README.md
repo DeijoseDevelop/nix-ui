@@ -1,4 +1,4 @@
-# ❄️ Nix UI
+# Nix UI
 
 [![npm version](https://img.shields.io/npm/v/@deijose/nix-ui.svg)](https://www.npmjs.com/package/@deijose/nix-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)

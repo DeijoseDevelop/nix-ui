@@ -81,7 +81,7 @@ function App(): NixTemplate {
                 <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5QzkyQUMiIGZpbGwtb3BhY2l0eT0iMSI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoLTR2Mmg0djRoMnYtNGg0di0yaC00em0wLTMwVjBoLTJ2NGgtNHYyaDR2NGgyVjZoNHYtMmgtNHpNNiAzNHYtNEg0djRIMGYyaDR2NGgydi00aDR2LTJINnpNNiA0VjBINFY0SDB2Mmg0djRoMlY2aDRWNEg2eiIvPjwvZz48L2c+PC9zdmc+')"></div>
                 <div class="max-w-4xl mx-auto relative z-10 text-center">
                     <span class="inline-block py-1 px-3 rounded-nix-full bg-nix-primary/10 text-nix-primary text-sm font-semibold mb-4 border border-nix-primary/20">
-                        v1.0.1 Ready
+                        v1.1.0 Ready
                     </span>
                     <h1 class="text-5xl font-extrabold text-nix-text mb-4 tracking-tight">
                         ❄️ Nix UI
