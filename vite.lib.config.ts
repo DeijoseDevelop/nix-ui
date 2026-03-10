@@ -22,6 +22,7 @@ export default defineConfig({
         emptyOutDir: true,
         sourcemap: true,
         cssCodeSplit: false,
+        minify: true,
 
         lib: {
             entry: resolve("src/index.ts"),
