@@ -1,6 +1,6 @@
 {
     "name": "@deijose/nix-ui",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A component library for Nix.js — Tailwind CSS powered with vanilla CSS escape hatch.",
     "keywords": [
         "ui",
