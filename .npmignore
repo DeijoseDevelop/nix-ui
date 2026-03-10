@@ -1,0 +1,28 @@
+# Archivos fuente y de configuración (no necesarios para producción de npm)
+src/
+dist/types/
+.github/
+.vscode/
+
+# Configuración de TypeScript y Vite
+tsconfig.json
+tsconfig.node.json
+tsconfig.lib.json
+vite.config.ts
+vite.lib.config.ts
+
+# Archivos de entorno
+.env*
+*.local
+
+# Archivos de la demo/proyecto (no de la librería)
+index.html
+
+# Tests
+tests/
+__tests__/
+*.test.*
+*.spec.*
+
+# Logs
+*.log

@@ -1,0 +1,69 @@
+{
+    "name": "@deijose/nix-ui",
+    "version": "1.0.0",
+    "description": "A component library for Nix.js — Tailwind CSS powered with vanilla CSS escape hatch.",
+    "keywords": [
+        "ui",
+        "components",
+        "nix-js",
+        "tailwind",
+        "framework"
+    ],
+    "author": "DeijoseDevelop",
+    "license": "MIT",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/lib/index.d.ts",
+                "default": "./dist/lib/nix-ui.js"
+            },
+            "require": {
+                "types": "./dist/lib/index.d.ts",
+                "default": "./dist/lib/nix-ui.cjs"
+            }
+        },
+        "./styles": "./dist/lib/style.css"
+    },
+    "main": "./dist/lib/nix-ui.cjs",
+    "module": "./dist/lib/nix-ui.js",
+    "types": "./dist/lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DeijoseDevelop/nix-ui.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DeijoseDevelop/nix-ui/issues"
+    },
+    "homepage": "https://github.com/DeijoseDevelop/nix-ui#readme",
+    "files": [
+        "dist/lib",
+        "!dist/lib/*.map",
+        "LICENSE"
+    ],
+    "sideEffects": [
+        "*.css"
+    ],
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc --noEmit && vite build",
+        "build:lib": "vite build --config vite.lib.config.ts && tsc --project tsconfig.lib.json",
+        "preview": "vite preview",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run build:lib && cp README.md .readme-full.md && cp .readme-npm.md README.md",
+        "postpublish": "mv .readme-full.md README.md"
+    },
+    "peerDependencies": {
+        "@deijose/nix-js": ">=1.2.0"
+    },
+    "dependencies": {
+        "@deijose/nix-js": "^1.2.0",
+        "@types/node": "^25.4.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.2.1",
+        "tailwindcss": "^4.2.1",
+        "typescript": "~5.9.3",
+        "vite": "^8.0.0-beta.13"
+    }
+}
