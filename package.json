@@ -35,7 +35,7 @@
     "bugs": {
         "url": "https://github.com/DeijoseDevelop/nix-ui/issues"
     },
-    "homepage": "https://github.com/DeijoseDevelop/nix-ui#readme",
+    "homepage": "https://nix-ui-landing.vercel.app/",
     "files": [
         "dist/lib",
         "!dist/lib/*.map",
