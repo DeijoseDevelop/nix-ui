@@ -1,7 +1,6 @@
 import { html, useRouter } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
-import logo from "../../images/ico/favicon-96x96.png";
 
 interface NavLink {
     id: string;
