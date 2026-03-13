@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-13
+
+### Added
+- **Client-Side Routing**: Integrated `@deijose/nix-js` router for seamless documentation navigation.
+- **Modular Architecture**: Split documentation pages into individual components in the `pages/` directory.
+- **Premium Design Overhaul**: Redesigned documentation with professional typography, background patterns, and refined spacing.
+- **Sidebar Enhancements**: Added Nix.js logo and active link highlighting with `router.isActive()`.
+- **API Documentation**: Added missing API references for `Tabs` and `Toast` components.
+
+### Fixed
+- **Forms Page**: Fixed issues with the forms documentation page and touched state handling.
+- **Component Stability**: Fixed width stability issues in `Accordion` when expanded.
+- **UI Consistency**: Fixed grid background overlapping components in preview boxes.
+
+## [1.1.3] - 2026-03-13
+### Changed
+- Refactored documentation shell for better performance.
+
 ## [1.1.0] - 2026-03-10
 
 ### Added

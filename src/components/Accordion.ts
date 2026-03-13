@@ -50,7 +50,7 @@ export function Accordion(props: AccordionProps): NixTemplate {
 
     return html`
         <div
-            class=${cx("divide-y divide-nix-border border border-nix-border rounded-nix-lg overflow-hidden", className)}
+            class=${cx("w-full divide-y divide-nix-border border border-nix-border rounded-nix-lg overflow-hidden", className)}
             style=${style ?? ""}
         >
             ${items.map(
