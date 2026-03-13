@@ -26,7 +26,7 @@ export function Sidebar(groups: NavGroup[]): NixTemplate {
                     window.scrollTo(0, 0);
                 }}
             >
-                <img src="../images/ico/favicon-96x96.png" alt="Nix.js Logo" class="sidebar-logo-img">
+                <img src="/images/ico/favicon-96x96.png" alt="Nix.js Logo" class="sidebar-logo-img">
                 <span>Nix UI</span>
             </a>
             
