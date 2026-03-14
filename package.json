@@ -1,6 +1,6 @@
 {
     "name": "@deijose/nix-ui",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "A component library for Nix.js — Tailwind CSS powered with vanilla CSS escape hatch.",
     "keywords": [
         "ui",
@@ -55,10 +55,10 @@
         "postpublish": "mv .readme-full.md README.md"
     },
     "peerDependencies": {
-        "@deijose/nix-js": ">=1.2.0"
+        "@deijose/nix-js": ">=1.7.3"
     },
     "dependencies": {
-        "@deijose/nix-js": "^1.7.1",
+        "@deijose/nix-js": "^1.7.3",
         "@types/node": "^25.4.0"
     },
     "devDependencies": {
