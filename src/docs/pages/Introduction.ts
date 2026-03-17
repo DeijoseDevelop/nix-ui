@@ -5,7 +5,7 @@ export function Introduction(): NixTemplate {
     return html`
         <div class="doc-container animate-nix-fade-in">
             <div class="flex items-center gap-3 mb-4">
-                <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-nix-primary/10 text-nix-primary rounded-full border border-nix-primary/20">v1.2.2</span>
+                <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-nix-primary/10 text-nix-primary rounded-full border border-nix-primary/20">v1.2.3</span>
             </div>
             <h1 class="doc-h1">Introduction</h1>
             <p class="doc-lead">A beautiful, reactive component library built for Nix.js.</p>

@@ -1,5 +1,6 @@
-import { html, createRouter, RouterView } from "@deijose/nix-js";
+import { html, createRouter, RouterView, signal } from "@deijose/nix-js";
 import { Sidebar } from "./Sidebar";
+import { cx } from "../utils/cx";
 
 // Import pages
 import { Introduction } from "./pages/Introduction";
@@ -84,9 +85,25 @@ const groups = [
 ];
 
 export function App() {
+    const isSidebarOpen = signal(false);
+
     return html`
         <div class="doc-layout transition-all duration-300">
-            ${Sidebar(groups)}
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <button class="mobile-toggle" @click=${() => isSidebarOpen.value = true}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="mobile-title">Nix UI</div>
+            </header>
+
+            <!-- Overlay -->
+            <div 
+                class=${() => cx("sidebar-overlay", isSidebarOpen.value && "active")} 
+                @click=${() => isSidebarOpen.value = false}
+            ></div>
+
+            ${Sidebar(groups, () => isSidebarOpen.value, () => isSidebarOpen.value = false)}
             
             <main class="main-content">
                 <div class="content-view">
