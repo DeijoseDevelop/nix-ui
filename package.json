@@ -55,10 +55,10 @@
         "postpublish": "mv .readme-full.md README.md"
     },
     "peerDependencies": {
-        "@deijose/nix-js": ">=1.7.6"
+        "@deijose/nix-js": ">=1.7.7"
     },
     "dependencies": {
-        "@deijose/nix-js": "^1.7.6",
+        "@deijose/nix-js": "^1.7.7",
         "@types/node": "^25.4.0"
     },
     "devDependencies": {
