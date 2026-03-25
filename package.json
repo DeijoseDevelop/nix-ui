@@ -9,7 +9,7 @@
         "tailwind",
         "framework"
     ],
-    "author": "DeijoseDevelop",
+    "author": "Deiver Vasquez",
     "license": "MIT",
     "type": "module",
     "exports": {
@@ -35,7 +35,7 @@
     "bugs": {
         "url": "https://github.com/DeijoseDevelop/nix-ui/issues"
     },
-    "homepage": "https://nix-ui.vercel.app/",
+    "homepage": "https://ui.nix-js.dev/",
     "files": [
         "dist/lib",
         "!dist/lib/*.map",
