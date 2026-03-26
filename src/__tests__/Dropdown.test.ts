@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { mount, signal, nextTick } from "@deijose/nix-js";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { mount, nextTick, html } from "@deijose/nix-js";
 import { Dropdown } from "../components/Dropdown";
 
 describe("Dropdown", () => {
@@ -21,7 +21,7 @@ describe("Dropdown", () => {
 
     it("renders trigger and responds to click", async () => {
         mount(Dropdown({ 
-            trigger: "Menu", 
+            trigger: html`Menu`, 
             items
         }), container);
         

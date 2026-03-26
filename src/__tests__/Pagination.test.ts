@@ -15,7 +15,7 @@ describe("Pagination", () => {
     });
 
     it("renders correct number of pages", () => {
-        mount(Pagination({ currentPage: 1, totalPages: 5 }), container);
+        mount(Pagination({ currentPage: 1, totalPages: 5, onPageChange: () => {} }), container);
         const buttons = container.querySelectorAll("button");
         expect(buttons.length).toBeGreaterThanOrEqual(5);
         expect(container.textContent).toContain("1");
