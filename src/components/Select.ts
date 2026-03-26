@@ -81,7 +81,7 @@ export function Select(props: SelectProps): NixTemplate {
                     id=${id}
                     class=${classes}
                     style=${style ?? ""}
-                    ?disabled=${disabled}
+                    disabled=${disabled}
                     @change=${(e: Event) => {
                         const val = (e.target as HTMLSelectElement).value;
                         field?.onInput(e);
@@ -102,7 +102,7 @@ export function Select(props: SelectProps): NixTemplate {
                                 <option
                                     value=${opt.value}
                                     ?selected=${opt.value === currentVal}
-                                    ?disabled=${opt.disabled ?? false}
+                                    disabled=${opt.disabled ?? false}
                                     class="bg-nix-bg text-nix-text"
                                 >${opt.label}</option>
                             `,

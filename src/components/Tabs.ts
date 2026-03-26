@@ -77,7 +77,7 @@ export function Tabs(props: TabsProps): NixTemplate {
     };
 
     const listClass = cx(
-        "flex",
+        "flex overflow-x-auto overflow-y-hidden",
         variant === "underline" && "border-b border-nix-border gap-0",
         variant === "pills" && "gap-1 p-1 bg-nix-surface rounded-nix-lg",
         variant === "bordered" && "border-b border-nix-border gap-0",
@@ -92,7 +92,7 @@ export function Tabs(props: TabsProps): NixTemplate {
                             type="button"
                             role="tab"
                             class=${getTabClass(tab)}
-                            ?disabled=${tab.disabled ?? false}
+                            disabled=${tab.disabled ?? false}
                             @click=${() => !tab.disabled && setTab(tab.key)}
                             aria-selected=${() => (activeKey.value === tab.key).toString()}
                         >

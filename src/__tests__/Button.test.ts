@@ -40,7 +40,8 @@ describe("Button", () => {
         mount(Button({ disabled: true, onClick, children: "Click Me" }), container);
         const btn = container.querySelector("button")!;
         
-        expect(btn.disabled).toBe(true);
+        // ?disabled sets the HTML attribute; use hasAttribute for happy-dom compatibility
+        expect(btn.hasAttribute("disabled")).toBe(true);
         btn.click();
         expect(onClick).not.toHaveBeenCalled();
     });
@@ -50,7 +51,8 @@ describe("Button", () => {
         mount(Button({ loading: true, onClick, children: "Click Me" }), container);
         const btn = container.querySelector("button")!;
         
-        expect(btn.disabled).toBe(true); // Loading disables the button
+        // Loading also sets ?disabled — check attribute
+        expect(btn.hasAttribute("disabled")).toBe(true);
         btn.click();
         expect(onClick).not.toHaveBeenCalled();
     });
@@ -69,7 +71,7 @@ describe("Button", () => {
         mount(Button({ disabled: isDisabled, loading: isLoading, onClick, children: "Click Me" }), container);
         const btn = container.querySelector("button")!;
         
-        expect(btn.disabled).toBe(false);
+        expect(btn.hasAttribute("disabled")).toBe(false);
         btn.click();
         expect(onClick).toHaveBeenCalledTimes(1);
 
@@ -77,7 +79,7 @@ describe("Button", () => {
         isDisabled.value = true;
         await nextTick();
         
-        expect(btn.disabled).toBe(true);
+        expect(btn.hasAttribute("disabled")).toBe(true);
         btn.click();
         expect(onClick).toHaveBeenCalledTimes(1); // not called again
 
@@ -86,7 +88,7 @@ describe("Button", () => {
         isLoading.value = true;
         await nextTick();
         
-        expect(btn.disabled).toBe(true);
+        expect(btn.hasAttribute("disabled")).toBe(true);
         const spinner = container.querySelector("span.animate-nix-spin");
         expect(spinner).not.toBeNull();
     });

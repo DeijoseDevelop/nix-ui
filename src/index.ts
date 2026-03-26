@@ -31,11 +31,26 @@ export type { ToggleProps } from "./components/Toggle";
 export { Badge } from "./components/Badge";
 export type { BadgeProps, BadgeVariant, BadgeSize } from "./components/Badge";
 
+export { Breadcrumb } from "./components/Breadcrumb";
+export type { BreadcrumbProps, BreadcrumbItem } from "./components/Breadcrumb";
+
 export { Card, CardHeader, CardBody, CardFooter } from "./components/Card";
 export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from "./components/Card";
 
+export { DataTable } from "./components/DataTable";
+export type { DataTableProps, DataTableColumn } from "./components/DataTable";
+
+export { Dropdown } from "./components/Dropdown";
+export type { DropdownProps, DropdownItem, DropdownPosition } from "./components/Dropdown";
+
 export { Modal, createModal } from "./components/Modal";
 export type { ModalProps, ModalSize } from "./components/Modal";
+
+export { Progress } from "./components/Progress";
+export type { ProgressProps, ProgressVariant, ProgressSize } from "./components/Progress";
+
+export { Skeleton } from "./components/Skeleton";
+export type { SkeletonProps, SkeletonVariant } from "./components/Skeleton";
 
 export { Spinner } from "./components/Spinner";
 export type { SpinnerProps, SpinnerSize, SpinnerVariant } from "./components/Spinner";
@@ -57,3 +72,18 @@ export type { AccordionProps, AccordionItem } from "./components/Accordion";
 
 export { ToastContainer, showToast, dismissToast, clearToasts, setToastPosition } from "./components/Toast";
 export type { ToastItem, ToastType, ToastPosition, ToastOptions } from "./components/Toast";
+
+export { RadioGroup } from "./components/RadioGroup";
+export type { RadioGroupProps, RadioOption } from "./components/RadioGroup";
+
+export { Slider } from "./components/Slider";
+export type { SliderProps } from "./components/Slider";
+
+export { Drawer } from "./components/Drawer";
+export type { DrawerProps } from "./components/Drawer";
+
+export { Pagination } from "./components/Pagination";
+export type { PaginationProps } from "./components/Pagination";
+
+export { Rating } from "./components/Rating";
+export type { RatingProps } from "./components/Rating";

@@ -147,11 +147,11 @@ const TYPE_STYLES: Record<ToastType, {
 };
 
 const POSITION_CLASSES: Record<ToastPosition, string> = {
-    "top-right":     "top-4 right-4 items-end",
-    "top-left":      "top-4 left-4 items-start",
+    "top-right":     "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
+    "top-left":      "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
     "top-center":    "top-4 left-1/2 -translate-x-1/2 items-center",
-    "bottom-right":  "bottom-4 right-4 items-end",
-    "bottom-left":   "bottom-4 left-4 items-start",
+    "bottom-right":  "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
+    "bottom-left":   "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
     "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center",
 };
 
@@ -264,7 +264,7 @@ export class ToastContainer extends NixComponent {
         return portal(
             html`
                 <div class=${() => cx(
-                    "fixed z-[9999] flex flex-col gap-3 max-w-[380px] w-full pointer-events-none",
+                    "fixed z-[9999] flex flex-col gap-3 w-[calc(100vw-2rem)] sm:w-[380px] pointer-events-none",
                     POSITION_CLASSES[_defaultPosition],
                 )}>
                     ${() =>

@@ -26,7 +26,8 @@ describe("Select", () => {
         expect(optNodes.length).toBe(3);
         expect(optNodes[0].value).toBe("1");
         expect(optNodes[0].textContent).toBe("Option 1");
-        expect(optNodes[2].disabled).toBe(true);
+        // ?disabled sets the HTML attribute
+        expect(optNodes[2].hasAttribute("disabled")).toBe(true);
     });
 
     it("renders placeholder first if provided", () => {
@@ -35,8 +36,8 @@ describe("Select", () => {
         expect(optNodes.length).toBe(4);
         expect(optNodes[0].value).toBe("");
         expect(optNodes[0].textContent).toBe("Select one...");
-        expect(optNodes[0].disabled).toBe(true);
-        expect(optNodes[0].selected).toBe(true);
+        expect(optNodes[0].hasAttribute("disabled")).toBe(true);
+        expect(optNodes[0].hasAttribute("selected")).toBe(true);
     });
 
     it("renders label", () => {
@@ -48,8 +49,10 @@ describe("Select", () => {
 
     it("binds static value correctly", () => {
         mount(Select({ options, value: "2" }), container);
-        const select = container.querySelector("select")!;
-        expect(select.value).toBe("2");
+        // ?selected sets the attribute on the matching option
+        const optNodes = container.querySelectorAll("option");
+        const selected = Array.from(optNodes).find(o => o.hasAttribute("?selected"));
+        expect(selected?.value).toBe("2");
     });
 
     it("handles onChange", () => {
@@ -76,7 +79,8 @@ describe("Select", () => {
     it("handles disabled state", () => {
         mount(Select({ options, disabled: true }), container);
         const select = container.querySelector("select")!;
-        expect(select.disabled).toBe(true);
+        // ?disabled sets the HTML attribute
+        expect(select.hasAttribute("disabled")).toBe(true);
         expect(select.className).toContain("opacity-50");
     });
 });

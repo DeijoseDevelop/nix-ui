@@ -58,7 +58,8 @@ describe("Toggle", () => {
     it("handles disabled state", () => {
         mount(Toggle({ disabled: true }), container);
         const button = container.querySelector('button[role="switch"]') as HTMLButtonElement;
-        expect(button.disabled).toBe(true);
+        // ?disabled sets the HTML attribute in Nix.js
+        expect(button.hasAttribute("disabled")).toBe(true);
     });
 
     it("toggles when label is clicked", () => {

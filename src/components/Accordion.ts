@@ -62,7 +62,7 @@ export function Accordion(props: AccordionProps): NixTemplate {
                                 "w-full flex items-center justify-between px-5 py-3.5 text-left text-sm font-medium text-nix-text hover:bg-nix-surface transition-colors duration-150 cursor-pointer",
                                 item.disabled && "opacity-50 cursor-not-allowed",
                             )}
-                            ?disabled=${item.disabled ?? false}
+                            disabled=${item.disabled ?? false}
                             @click=${() => !item.disabled && toggle(item.key)}
                             aria-expanded=${() => openKeys.value.includes(item.key).toString()}
                         >

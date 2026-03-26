@@ -69,7 +69,7 @@ export function Textarea(props: TextareaProps): NixTemplate {
                 rows=${rows}
                 value=${valBind}
                 placeholder=${placeholder}
-                ?disabled=${disabled}
+                disabled=${disabled}
                 @input=${(e: Event) => {
                     const val = (e.target as HTMLTextAreaElement).value;
                     field?.onInput(e);

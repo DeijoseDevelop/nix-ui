@@ -18,7 +18,7 @@ describe("Textarea", () => {
         mount(Textarea({}), container);
         const textarea = container.querySelector("textarea")!;
         expect(textarea).not.toBeNull();
-        expect(Number(textarea.rows)).toBe(4); // Default rows
+        expect(Number(textarea.rows)).toBe(4);
     });
 
     it("renders with label", () => {
@@ -69,7 +69,8 @@ describe("Textarea", () => {
     it("handles disabled state", () => {
         mount(Textarea({ disabled: true }), container);
         const textarea = container.querySelector("textarea")!;
-        expect(textarea.disabled).toBe(true);
+        // ?disabled sets the HTML attribute
+        expect(textarea.hasAttribute("disabled")).toBe(true);
         expect(textarea.className).toContain("opacity-50");
     });
 });

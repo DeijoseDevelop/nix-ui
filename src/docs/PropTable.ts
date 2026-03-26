@@ -10,7 +10,8 @@ export interface PropItem {
 
 export function PropTable(props: PropItem[]): NixTemplate {
     return html`
-        <table class="prop-table">
+        <div class="w-full overflow-x-auto pb-4">
+            <table class="prop-table">
             <thead>
                 <tr>
                     <th>Property</th>
@@ -29,6 +30,7 @@ export function PropTable(props: PropItem[]): NixTemplate {
                     </tr>
                 `)}
             </tbody>
-        </table>
+            </table>
+        </div>
     `;
 }

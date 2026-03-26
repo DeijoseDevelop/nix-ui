@@ -166,7 +166,7 @@
 
 .doc-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px minmax(0, 1fr);
     min-height: 100vh;
     background-color: var(--color-nix-surface);
 }
@@ -325,7 +325,7 @@ code:not(pre code) {
     min-height: 240px;
     box-shadow: var(--shadow-nix-sm);
     position: relative;
-    overflow: hidden;
+    z-index: 10;
 }
 
 .code-box {
@@ -423,7 +423,7 @@ code:not(pre code) {
 
 @media (max-width: 1100px) {
     .doc-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         padding-top: 64px;
     }
 
@@ -445,7 +445,7 @@ code:not(pre code) {
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: var(--shadow-nix-xl) !important;
-        height: 100vh !important;
+        height: 100% !important;
         display: block !important;
         padding-top: 1.5rem !important;
     }

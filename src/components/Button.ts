@@ -76,7 +76,7 @@ export function Button(props: ButtonProps): NixTemplate {
             type=${type}
             class=${classes}
             style=${style ?? ""}
-            ?disabled=${isBtnDisabled}
+            disabled=${isBtnDisabled}
             @click=${(e: Event) => {
                 if (isBtnDisabled()) {
                     e.preventDefault();

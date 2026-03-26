@@ -18,13 +18,10 @@ describe("Modal", () => {
         const modalState = createModal();
         mount(Modal({ open: modalState.isOpen, children: "Modal Content" }), container);
         
-        // Not open yet, should be null or empty
         expect(document.body.querySelector(".nix-modal-root")).toBeNull();
         
-        // Open the modal
         modalState.open();
         
-        // Portal appends to document.body, but nix-js portal might be a synchronous DOM append.
         const root = document.querySelector(".nix-modal-root");
         expect(root).not.toBeNull();
         expect(root?.textContent).toContain("Modal Content");
@@ -91,7 +88,8 @@ describe("Modal", () => {
         mount(Modal({ open: modalState.isOpen, children: "Content" }), container);
         
         const root = document.querySelector(".nix-modal-root") as HTMLDivElement;
-        root.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        // Dispatch with bubbles:true so it propagates through the DOM
+        root.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
         
         expect(modalState.isOpen.value).toBe(false);
     });

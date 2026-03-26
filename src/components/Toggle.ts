@@ -79,7 +79,7 @@ export function Toggle(props: ToggleProps): NixTemplate {
             <button
                 type="button"
                 role="switch"
-                ?disabled=${disabled}
+                disabled=${disabled}
                 @click=${toggle}
                 class=${() => cx(
                     "relative inline-flex shrink-0 rounded-full transition-colors duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-nix-primary/30 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed",

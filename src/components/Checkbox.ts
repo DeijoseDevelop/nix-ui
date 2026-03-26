@@ -58,8 +58,8 @@ export function Checkbox(props: CheckboxProps): NixTemplate {
                         id=${id}
                         type="checkbox"
                         class="peer absolute opacity-0 w-0 h-0"
-                        ?checked=${isChecked}
-                        ?disabled=${disabled}
+                        checked=${isChecked}
+                        disabled=${disabled}
                         @change=${(e: Event) => {
                             const el = e.target as HTMLInputElement;
                             if (!field && typeof checked !== 'function') localChecked.value = el.checked;

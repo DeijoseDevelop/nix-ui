@@ -49,12 +49,10 @@ describe("Input", () => {
         
         const input = container.querySelector("input")!;
         
-        // Simular evento input
         input.value = "A";
         input.dispatchEvent(new Event("input", { bubbles: true }));
         expect(onInput).toHaveBeenCalledWith("A", expect.any(Event));
         
-        // Simular evento change
         input.dispatchEvent(new Event("change", { bubbles: true }));
         expect(onChange).toHaveBeenCalledWith("A", expect.any(Event));
     });
@@ -73,7 +71,8 @@ describe("Input", () => {
     it("handles disabled state", () => {
         mount(Input({ disabled: true, value: "Text" }), container);
         const input = container.querySelector("input")!;
-        expect(input.disabled).toBe(true);
+        // ?disabled sets the HTML attribute in Nix.js; use hasAttribute for happy-dom
+        expect(input.hasAttribute("disabled")).toBe(true);
         expect(input.className).toContain("opacity-50");
     });
 });

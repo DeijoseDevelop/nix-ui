@@ -66,6 +66,7 @@ describe("Accordion", () => {
         const btns = container.querySelectorAll("button");
         
         btns[0].click();
+        await nextTick();
         btns[1].click();
         await nextTick();
         
@@ -82,14 +83,10 @@ describe("Accordion", () => {
         mount(Accordion({ items, multiple: false }), container);
         const btns = container.querySelectorAll("button");
         
-        // Open 1
         btns[0].click();
         await nextTick();
         expect(container.textContent).toContain("Content 1");
         
-        // Open 2 (should close 1 internally, but wait, the implementation says:
-        // const next = multiple ? [...keys, key] : [key];
-        // So it overrides the keys array. Meaning 1 closes)
         btns[1].click();
         await nextTick();
         
@@ -105,7 +102,8 @@ describe("Accordion", () => {
         mount(Accordion({ items }), container);
         const btn = container.querySelector("button")!;
         
-        expect(btn.disabled).toBe(true);
+        // ?disabled sets the HTML attribute — check with hasAttribute for happy-dom compatibility
+        expect(btn.hasAttribute("disabled")).toBe(true);
         btn.click();
         await nextTick();
         

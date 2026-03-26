@@ -25,7 +25,6 @@ describe("Tabs", () => {
         const buttons = container.querySelectorAll('button[role="tab"]');
         expect(buttons.length).toBe(3);
         
-        // Defaults to first tab
         expect(container.textContent).toContain("Content 1");
         expect(container.textContent).not.toContain("Content 2");
         expect(buttons[0].getAttribute("aria-selected")).toBe("true");
@@ -60,7 +59,8 @@ describe("Tabs", () => {
         
         const buttons = container.querySelectorAll('button[role="tab"]') as NodeListOf<HTMLButtonElement>;
         
-        expect(buttons[2].disabled).toBe(true);
+        // ?disabled sets the HTML attribute
+        expect(buttons[2].hasAttribute("disabled")).toBe(true);
         buttons[2].click();
         await nextTick();
         

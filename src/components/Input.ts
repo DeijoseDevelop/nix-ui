@@ -85,7 +85,7 @@ export function Input(props: InputProps): NixTemplate {
                 style=${style ?? ""}
                 placeholder=${placeholder}
                 value=${valBind}
-                ?disabled=${disabled}
+                disabled=${disabled}
                 @input=${(e: Event) => {
                     const val = (e.target as HTMLInputElement).value;
                     field?.onInput(e);
