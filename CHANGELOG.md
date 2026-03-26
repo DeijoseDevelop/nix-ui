@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5] - 2026-03-25
+
+### Added
+- **10 New Premium Components**: `DataTable`, `Drawer`, `Pagination`, `Progress`, `RadioGroup`, `Rating`, `Skeleton`, `Slider`, `Breadcrumb`, and `Dropdown`.
+- **Comprehensive Test Suite**: Test suite extended to 117 unit tests, keeping 100% test coverage across all 26 components.
+- **Styling Section**: Added a new _Styling & Customization_ page teaching developers how to configure themes and CSS variables.
+- **Extended API References**: Added API tables across all the new components (`Rating`, `Pagination`, `Drawer`, etc).
+
+### Fixed
+- **Mobile Responsiveness**:
+  - `doc-layout`: Fixed a CSS Grid blowout bug (`minmax(0, 1fr)`) that caused horizontal scrolling on mobile viewports.
+  - `PropTable`: Nested tables inside horizontal scrolling overlays to prevent layout breakage.
+  - `Toast`, `Tabs`, `Pagination`: Optimized alignments, wrapping, and sizes for small screen form factors.
+- **Z-Index Layering**: Solved layering issues where `Dropdown` popups rendered beneath subsequent `.preview-box` components.
+- **Hydration Behaviors**: Unified attribute bindings directly relying on standard IDL attribute mappings.
+
 ## [1.2.2] - 2026-03-16
 
 ### Added
