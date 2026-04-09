@@ -1,5 +1,7 @@
 # Nix UI
 
+> 📖 **Read the official documentation, API references, and interact with live sandboxes at [ui.nix-js.dev](https://ui.nix-js.dev)**
+
 A beautifully designed, heavily optimized component library built from the ground up for **Nix.js**. Powered by **Tailwind CSS v4** styling, but completely open for Vanilla CSS overrides when you need maximum control.
 
 [![npm version](https://img.shields.io/npm/v/@deijose/nix-ui.svg)](https://www.npmjs.com/package/@deijose/nix-ui)
@@ -7,7 +9,7 @@ A beautifully designed, heavily optimized component library built from the groun
 
 ## ✨ Why Nix UI?
 
-Nix UI leverages the ultra-lightweight signals architecture of Nix.js combined with the utility-first power of Tailwind CSS to deliver **16 essential components** that are ready to use, accessible, and look stunning out of the box.
+Nix UI leverages the ultra-lightweight signals architecture of Nix.js combined with the utility-first power of Tailwind CSS to deliver **26 essential components** that are ready to use, accessible, and look stunning out of the box.
 
 *   **Native Nix.js Performance**: Fully reactive, no VDOM overhead.
 *   **Fully Animated**: Deeply integrated with Nix.js `transition()` for buttery smooth 60fps animations.
@@ -81,199 +83,61 @@ export function App() {
 
 ---
 
-## 🧩 Components Catalog (16 Components)
+## 🧩 Components Catalog
+
+Nix UI offers 26 fully-featured components. Check out the interactive playgrounds and full API documentation on our site:
 
 ### 🔲 Layout & Containers
-
-#### 1. Card
-A versatile container with optional header and footer slots.
-```typescript
-Card({
-  header: html`<h3 class="font-bold">Card Title</h3>`,
-  children: "Inner body content here...",
-  footer: html`<span class="text-sm">Footer text</span>`
-})
-```
-
-#### 2. Accordion
-A vertically stacked set of interactive headings that each reveal a section of content.
-```typescript
-Accordion({
-  items: [
-    { title: "Section 1", content: "Content for section 1" },
-    { title: "Section 2", content: "Content for section 2" }
-  ]
-})
-```
+* [Card](https://ui.nix-js.dev/components/card)
+* [Accordion](https://ui.nix-js.dev/components/accordion)
 
 ### 🔘 Interaction & Forms
-
-#### 3. Button
-Primary interactive element with 5 variants (`primary`, `secondary`, `outline`, `danger`, `ghost`) and 3 sizes (`sm`, `md`, `lg`).
-```typescript
-Button({ 
-  variant: "primary", 
-  size: "lg", 
-  loading: false,
-  onClick: () => console.log('clicked'),
-  children: "Click Me" 
-})
-```
-
-#### 4. Input
-Text input with visual label formatting, focused states, and external error state formatting.
-```typescript
-Input({
-  label: "Username",
-  placeholder: "Enter username",
-  type: "text"
-})
-```
-
-#### 5. Textarea
-Multi-line text input with custom styling and standard attributes.
-```typescript
-Textarea({
-  label: "Description",
-  placeholder: "Write something...",
-  rows: 4
-})
-```
-
-#### 6. Select
-Native `<select>` dropdown styled to match the UI system.
-```typescript
-Select({
-  label: "Country",
-  options: [
-    { label: "Select a country...", value: "" },
-    { label: "USA", value: "us" },
-  ]
-})
-```
-
-#### 7. Checkbox
-Custom styled checkbox element supporting checked bindings.
-```typescript
-Checkbox({
-  label: "I agree to the terms",
-  checked: mySignal.value,
-  onChange: (e) => mySignal.value = e.target.checked
-})
-```
-
-#### 8. Toggle / Switch
-Animated toggle switch component.
-```typescript
-Toggle({
-  label: "Enable notifications",
-  checked: mySignal.value,
-  onChange: (e) => mySignal.value = e.target.checked
-})
-```
+* [Button](https://ui.nix-js.dev/components/button)
+* [Input](https://ui.nix-js.dev/components/input)
+* [Textarea](https://ui.nix-js.dev/components/textarea)
+* [Select](https://ui.nix-js.dev/components/select)
+* [Checkbox](https://ui.nix-js.dev/components/checkbox)
+* [RadioGroup](https://ui.nix-js.dev/components/radio-group)
+* [Toggle / Switch](https://ui.nix-js.dev/components/toggle)
+* [Slider](https://ui.nix-js.dev/components/slider)
+* [Rating](https://ui.nix-js.dev/components/rating)
 
 ### 📊 Data Display
-
-#### 9. Badge
-Small status indicators displaying inline information. Sizes (`sm`, `md`, `lg`) and variants (`default`, `primary`, `success`, `warning`, `error`).
-```typescript
-Badge({
-  variant: "success",
-  children: "Completed"
-})
-```
-
-#### 10. Avatar
-Circular image wrapper with automatic fallback parsing to display initials. Sizes (`sm`, `md`, `lg`, `xl`).
-```typescript
-// With image
-Avatar({ src: "/avatar.jpg", alt: "John Doe" })
-
-// With fallback initials (renders "JD")
-Avatar({ fallback: "John Doe" }) 
-```
-
-#### 11. Spinner
-Loading indicator. Variants (`primary`, `white`, `neutral`) and sizes (`sm`, `md`, `lg`).
-```typescript
-Spinner({ size: "md", variant: "primary" })
-```
-
-#### 12. Alert
-Static banner for displaying important messages. Variants (`info`, `success`, `warning`, `error`). Native animated close button support.
-```typescript
-Alert({
-  title: "Update Available",
-  children: "A new version of the software is ready.",
-  variant: "info",
-  onClose: () => hideAlert()
-})
-```
+* [Badge](https://ui.nix-js.dev/components/badge)
+* [Avatar](https://ui.nix-js.dev/components/avatar)
+* [Spinner](https://ui.nix-js.dev/components/spinner)
+* [Alert](https://ui.nix-js.dev/components/alert)
+* [Progress](https://ui.nix-js.dev/components/progress)
+* [Skeleton](https://ui.nix-js.dev/components/skeleton)
+* [DataTable](https://ui.nix-js.dev/components/data-table)
 
 ### 🧩 Overlay & Navigation
+* [Modal](https://ui.nix-js.dev/components/modal)
+* [Drawer](https://ui.nix-js.dev/components/drawer)
+* [Dropdown](https://ui.nix-js.dev/components/dropdown)
+* [Tooltip](https://ui.nix-js.dev/components/tooltip)
+* [Tabs](https://ui.nix-js.dev/components/tabs)
+* [Breadcrumb](https://ui.nix-js.dev/components/breadcrumb)
+* [Pagination](https://ui.nix-js.dev/components/pagination)
+* [Toast](https://ui.nix-js.dev/components/toast)
 
-#### 13. Modal
-Dialog window overlay taking focus over everything else. Smooth enter/exit transition animations.
-```typescript
-Modal({
-  open: modalStateSignal,
-  title: "Confirm Action",
-  closeButton: true,
-  children: html`<p>Are you sure you want to do this?</p>`,
-})
-```
-
-#### 14. Tooltip
-Small popover providing contextual information on hover.
-```typescript
-Tooltip({
-  content: "This does something special",
-  position: "top", // top, bottom, left, right
-  children: Button({ children: "Hover Me" })
-})
-```
-
-#### 15. Tabs
-Organize content into selectable panels.
-```typescript
-Tabs({
-  tabs: [
-    { id: "tab1", label: "Profile", content: () => html`Profile Data` },
-    { id: "tab2", label: "Settings", content: () => html`Settings Data` },
-  ],
-  defaultTab: "tab1"
-})
-```
-
-#### 16. Toast
-Non-blocking notifications floating above content. Automatically expires with progress bar. Top-level API usage `showToast()`.
-```typescript
-import { showToast } from "@deijose/nix-ui";
-
-// Trigger anywhere!
-showToast("Profile saved successfully!", "success", {
-  position: "bottom-right",
-  duration: 4000
-});
-```
+> 🎯 **[Explore all components on ui.nix-js.dev](https://ui.nix-js.dev/components)**
 
 ---
 
-## Overriding Styles
+## 🎨 Theming & Customization
 
-Every component accepts `class` and `style` props. Nix UI intelligently merges your custom classes with its own base styling via an internal `cx()` engine powered by intelligent tailwind-class manipulation.
+Every component accepts `class` and `style` props. Nix UI intelligently merges your custom Tailwind classes with its own base styling via an internal `cx()` engine.
+
+Furthermore, colors and rounding are handled via CSS variables. You can easily tweak the default palette (e.g. `--nix-primary`, `--nix-bg`, `--nix-text`) across your whole app.
+
+**[Read the Theming Guide on ui.nix-js.dev](https://ui.nix-js.dev/theming)**
 
 ```typescript
-// Changing a button's specific Tailwind classes
+// Example changing a button's specific Tailwind classes
 Button({
   class: "bg-purple-600 hover:bg-purple-700 shadow-xl rounded-full px-8",
   children: "Custom Pill Button"
-})
-
-// Or using inline CSS / CSS Modules
-Button({
-  style: "background: linear-gradient(90deg, #ff00cc, #333399); border-radius: 999px;",
-  children: "Gradient Button"
 })
 ```
 
