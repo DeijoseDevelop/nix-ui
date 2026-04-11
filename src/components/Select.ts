@@ -2,8 +2,6 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 import type { FieldState } from "@deijose/nix-js";
 
 export interface SelectOption {
@@ -25,17 +23,15 @@ export interface SelectProps {
     onChange?: (value: string, e: Event) => void;
     onBlur?: (e: Event) => void;
     field?: FieldState<string>;
+    description?: string;
+    required?: boolean;
 }
-
-// ── Size maps ──────────────────────────────────────────────────────────────────
 
 const SIZE: Record<string, string> = {
     sm: "px-2.5 py-1.5 text-xs",
     md: "px-3 py-2 text-sm",
     lg: "px-4 py-2.5 text-base",
 };
-
-// ── Component ──────────────────────────────────────────────────────────────────
 
 let _selectId = 0;
 
@@ -53,9 +49,15 @@ export function Select(props: SelectProps): NixTemplate {
         onChange,
         onBlur,
         field,
+        description,
+        required = false,
     } = props;
 
-    const id = `nix-select-${_selectId++}`;
+    const instanceId = _selectId++;
+    const id = `nix-select-${instanceId}`;
+    const labelId = `nix-select-label-${instanceId}`;
+    const errorId = `nix-select-error-${instanceId}`;
+    const descriptionId = `nix-select-description-${instanceId}`;
 
     const valBind = field ? (() => String(field.value.value ?? "")) : (typeof value === 'function' ? value : value);
     const errBind = field ? (() => field.error.value) : (typeof error === 'function' ? error : error);
@@ -74,31 +76,50 @@ export function Select(props: SelectProps): NixTemplate {
     return html`
         <div class="flex flex-col gap-1.5 w-full">
             ${label
-                ? html`<label for=${id} class="text-sm font-semibold text-nix-text/90">${label}</label>`
-                : ""}
+            ? html`<label id=${labelId} for=${id} class="text-sm font-semibold text-nix-text/90">
+                      ${label}
+                      ${required ? html`<span class="text-nix-error" aria-hidden="true">*</span>` : ""}
+                  </label>`
+            : ""}
+            ${description
+            ? html`<span id=${descriptionId} class="text-xs text-nix-text-muted">${description}</span>`
+            : ""}
             <div class="relative group">
                 <select
                     id=${id}
                     class=${classes}
                     style=${style ?? ""}
                     disabled=${disabled}
+                    required=${required}
+                    aria-labelledby=${label ? labelId : undefined}
+                    aria-invalid=${() => {
+            const currentError = typeof errBind === 'function' ? errBind() : errBind;
+            return currentError ? "true" : undefined;
+        }}
+                    aria-describedby=${() => {
+            const currentError = typeof errBind === 'function' ? errBind() : errBind;
+            const ids = [];
+            if (description) ids.push(descriptionId);
+            if (currentError) ids.push(errorId);
+            return ids.length > 0 ? ids.join(" ") : undefined;
+        }}
                     @change=${(e: Event) => {
-                        const val = (e.target as HTMLSelectElement).value;
-                        field?.onInput(e);
-                        onChange?.(val, e);
-                    }}
+            const val = (e.target as HTMLSelectElement).value;
+            field?.onInput(e);
+            onChange?.(val, e);
+        }}
                     @blur=${(e: Event) => {
-                        field?.onBlur();
-                        onBlur?.(e);
-                    }}
+            field?.onBlur();
+            onBlur?.(e);
+        }}
                 >
                     ${placeholder
-                        ? html`<option value="" disabled selected>${placeholder}</option>`
-                        : ""}
+            ? html`<option value="" disabled selected>${placeholder}</option>`
+            : ""}
                     ${() => {
-                        const currentVal = typeof valBind === 'function' ? valBind() : valBind;
-                        return options.map(
-                            (opt) => html`
+            const currentVal = typeof valBind === 'function' ? valBind() : valBind;
+            return options.map(
+                (opt) => html`
                                 <option
                                     value=${opt.value}
                                     ?selected=${opt.value === currentVal}
@@ -106,8 +127,8 @@ export function Select(props: SelectProps): NixTemplate {
                                     class="bg-nix-bg text-nix-text"
                                 >${opt.label}</option>
                             `,
-                        );
-                    }}
+            );
+        }}
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-nix-text-muted transition-colors group-focus-within:text-nix-primary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -116,11 +137,11 @@ export function Select(props: SelectProps): NixTemplate {
                 </div>
             </div>
             ${() => {
-                const currentError = typeof errBind === 'function' ? errBind() : errBind;
-                return currentError 
-                    ? html`<span class="text-xs text-nix-error ml-1 font-medium animate-nix-slide-up">${currentError}</span>`
-                    : "";
-            }}
+            const currentError = typeof errBind === 'function' ? errBind() : errBind;
+            return currentError
+                ? html`<span id=${errorId} class="text-xs text-nix-error ml-1 font-medium animate-nix-slide-up" role="alert">${currentError}</span>`
+                : "";
+        }}
         </div>
     `;
 }

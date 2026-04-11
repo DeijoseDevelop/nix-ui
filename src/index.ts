@@ -1,13 +1,30 @@
-// Nix-UI — Public Library Entry Point
-// Import from here as an npm consumer:
-//   import { Button, Input, showToast } from "@deijose/nix-ui";
-
 import "./styles/base.css";
 
 // ── Utils ──────────────────────────────────────────────────────────────────────
 export { cx } from "./utils/cx";
 export type { CxValue } from "./utils/cx";
 export type { NixUIChildren } from "./utils/types";
+
+// ── Accessibility Utilities ────────────────────────────────────────────────────
+export {
+    nixId,
+    nixIdRegistry,
+    nixFocusTrap,
+    nixFocusRestore,
+    nixDismissable,
+    nixRovingTabindex,
+    nixAriaDescribedby,
+    nixLiveRegion,
+    nixKeyboardSlider,
+    nixSliderValueText,
+} from "./utils/a11y";
+export type {
+    FocusTrapOptions,
+    FocusRestoreOptions,
+    DismissableOptions,
+    RovingTabindexOptions,
+    LiveRegionLevel,
+} from "./utils/a11y/types";
 
 // ── Components ─────────────────────────────────────────────────────────────────
 export { Button } from "./components/Button";

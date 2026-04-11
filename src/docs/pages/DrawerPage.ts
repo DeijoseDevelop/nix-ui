@@ -36,8 +36,8 @@ export function DrawerPage() {
                 </div>
             </div>
 
-            ${Drawer({
-                open: () => isRightOpen.value,
+            ${() => Drawer({
+                open: isRightOpen.value,
                 onClose: () => isRightOpen.value = false,
                 position: "right",
                 title: "User Profile",
@@ -56,8 +56,8 @@ export function DrawerPage() {
                 `
             })}
             
-            ${Drawer({
-                open: () => isLeftOpen.value,
+            ${() => Drawer({
+                open: isLeftOpen.value,
                 onClose: () => isLeftOpen.value = false,
                 position: "left",
                 title: "Navigation Menu",
@@ -70,8 +70,8 @@ export function DrawerPage() {
                 `
             })}
             
-            ${Drawer({
-                open: () => isBottomOpen.value,
+            ${() => Drawer({
+                open: isBottomOpen.value,
                 onClose: () => isBottomOpen.value = false,
                 position: "bottom",
                 title: "Options panel",

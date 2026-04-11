@@ -1,6 +1,7 @@
 import { html, signal } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
+import { nixRovingTabindex } from "../utils/a11y/index";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -22,6 +23,8 @@ export interface DropdownProps {
     class?: string;
     style?: string;
     width?: string;
+    /** Accessible label for the dropdown trigger */
+    label?: string;
 }
 
 // ── Position maps ──────────────────────────────────────────────────────────────
@@ -45,124 +48,140 @@ export function Dropdown(props: DropdownProps): NixTemplate {
         class: className,
         style,
         width = "12rem",
+        label,
     } = props;
 
+    const instanceId = _dropdownId++;
+    const dropdownId = `nix-dropdown-menu-${instanceId}`;
+    const triggerId = `nix-dropdown-trigger-${instanceId}`;
+
     const isOpen = signal(false);
-    const id = `nix-dropdown-${_dropdownId++}`;
-    const focusIndex = signal(-1);
+    let roving: ReturnType<typeof nixRovingTabindex> | null = null;
 
     const close = () => {
         isOpen.value = false;
-        focusIndex.value = -1;
+        if (roving) {
+            roving.deactivate();
+            roving = null;
+        }
+        document.getElementById(triggerId)?.focus();
     };
 
     const toggle = () => {
-        isOpen.value = !isOpen.value;
-        if (isOpen.value) focusIndex.value = -1;
+        if (isOpen.value) {
+            close();
+        } else {
+            isOpen.value = true;
+            setTimeout(() => {
+                const el = document.getElementById(dropdownId);
+                if (el) {
+                    roving = nixRovingTabindex({
+                        container: el,
+                        itemSelector: "button[role='menuitem']:not([disabled])",
+                        orientation: "vertical"
+                    });
+                    roving.activate();
+                    roving.focusFirst();
+                }
+            }, 0);
+        }
     };
 
     // Close on click outside
     const onDocClick = (e: Event) => {
-        const el = document.getElementById(id);
+        const el = document.getElementById(`nix-dropdown-${instanceId}`);
         if (el && !el.contains(e.target as Node)) close();
     };
 
-    const onKeydown = (e: KeyboardEvent) => {
+    const onTriggerKeydown = (e: KeyboardEvent) => {
         if (!isOpen.value) {
             if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                isOpen.value = true;
-                focusIndex.value = 0;
+                toggle();
             }
-            return;
-        }
-
-        const actionItems = items.filter(item => !item.divider && !item.disabled);
-
-        if (e.key === "Escape") {
+        } else if (e.key === "Escape") {
             e.preventDefault();
             close();
-        } else if (e.key === "ArrowDown") {
-            e.preventDefault();
-            focusIndex.value = Math.min(focusIndex.value + 1, actionItems.length - 1);
-        } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            focusIndex.value = Math.max(focusIndex.value - 1, 0);
-        } else if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            const item = actionItems[focusIndex.value];
-            if (item?.onClick) {
-                item.onClick();
-                close();
-            }
         }
     };
 
     return html`
         <div
-            id=${id}
+            id=${`nix-dropdown-${instanceId}`}
             class=${cx("relative inline-block", className)}
             style=${style ?? ""}
-            @keydown=${onKeydown}
         >
-            <div @click=${toggle} class="cursor-pointer">
+            <div
+                @click=${toggle}
+                @keydown=${onTriggerKeydown}
+                class="cursor-pointer"
+                id=${triggerId}
+                role="button"
+                tabindex="0"
+                aria-haspopup="true"
+                aria-expanded=${() => isOpen.value.toString()}
+                aria-controls=${dropdownId}
+            >
                 ${trigger}
             </div>
 
             ${() => {
-                if (!isOpen.value) return "";
+            if (!isOpen.value) return "";
 
-                // Attach document listener when open
-                setTimeout(() => document.addEventListener("click", onDocClick, { once: true }), 0);
+            // Attach document listener when open
+            setTimeout(() => document.addEventListener("click", onDocClick, { once: true }), 0);
 
-                let actionIdx = -1;
-
-                return html`
+            return html`
                     <div
+                        id=${dropdownId}
                         class=${cx(
-                            "absolute z-[100] py-1 rounded-nix-lg border border-nix-border bg-nix-bg shadow-nix-lg",
-                            "animate-nix-fade-in",
-                            POSITION_CLASS[position],
-                        )}
+                "absolute z-[100] py-1 rounded-nix-lg border border-nix-border bg-nix-bg shadow-nix-lg",
+                "animate-nix-fade-in",
+                POSITION_CLASS[position],
+            )}
                         style=${`min-width: ${width};`}
                         role="menu"
+                        aria-labelledby=${triggerId}
+                        @keydown=${(e: KeyboardEvent) => {
+                if (e.key === "Escape") {
+                    e.preventDefault();
+                    close();
+                }
+            }}
                     >
+                        ${label ? html`<div class="sr-only" id=${`${dropdownId}-label`}>${label}</div>` : ""}
                         ${items.map(item => {
-                            if (item.divider) {
-                                return html`<div class="border-t border-nix-border my-1"></div>`;
-                            }
+                if (item.divider) {
+                    return html`<div class="border-t border-nix-border my-1" role="separator"></div>`;
+                }
 
-                            actionIdx++;
-                            const idx = actionIdx;
-
-                            return html`
+                return html`
                                 <button
                                     type="button"
                                     class=${() => cx(
-                                        "w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2",
-                                        item.disabled
-                                            ? "text-nix-text-muted cursor-not-allowed opacity-50"
-                                            : "text-nix-text hover:bg-nix-primary/10 hover:text-nix-primary cursor-pointer",
-                                        focusIndex.value === idx && !item.disabled && "bg-nix-primary/10 text-nix-primary",
-                                        item.class,
-                                    )}
+                    "w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2",
+                    item.disabled
+                        ? "text-nix-text-muted cursor-not-allowed opacity-50"
+                        : "text-nix-text hover:bg-nix-primary/10 hover:text-nix-primary focus:bg-nix-primary/10 focus:text-nix-primary focus:outline-none cursor-pointer",
+                    item.class,
+                )}
                                     role="menuitem"
+                                    tabindex="-1"
                                     disabled=${item.disabled}
                                     @click=${() => {
-                                        if (item.disabled) return;
-                                        item.onClick?.();
-                                        close();
-                                    }}
-                                    @mouseenter=${() => { focusIndex.value = idx; }}
+                        if (item.disabled) return;
+                        item.onClick?.();
+                        close();
+                    }}
                                 >
                                     ${item.icon ? html`<span class="text-base">${item.icon}</span>` : ""}
                                     ${item.label}
                                 </button>
                             `;
-                        })}
+            })}
                     </div>
                 `;
-            }}
+        }}
         </div>
     `;
 }

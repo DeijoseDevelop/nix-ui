@@ -3,20 +3,15 @@ import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
 export interface PaginationProps {
-    /** Página actual (puede ser un número estático o un getter reactivo) */
     currentPage: number | (() => number);
-    /** Total de páginas (puede ser un número estático o un getter reactivo) */
     totalPages: number | (() => number);
-    /** Cantidad de páginas vecinas a mostrar a los lados de la actual */
     siblingCount?: number;
-    /** Muestra u oculta los botones de anterior/siguiente */
     showControls?: boolean;
-    /** Evento emitido al cambiar de página */
     onPageChange: (page: number) => void;
-    /** Clases CSS adicionales */
     class?: string;
-    /** Tamaño del paginador */
     size?: "sm" | "md" | "lg";
+    /** Accessible label for the pagination nav */
+    label?: string;
 }
 
 export function Pagination(props: PaginationProps): NixTemplate {
@@ -28,20 +23,17 @@ export function Pagination(props: PaginationProps): NixTemplate {
         onPageChange,
         class: className,
         size = "md",
+        label = "Pagination",
     } = props;
 
-    // Resolvemos los valores dinámicamente
     const current = (): number => (typeof currentPage === "function" ? currentPage() : currentPage);
     const total = (): number => (typeof totalPages === "function" ? totalPages() : totalPages);
 
-    // Tipamos el retorno explícitamente como un array mixto de números y strings
     const generatePages = (): (number | string)[] => {
         const c = current();
         const t = total();
         const sc = siblingCount;
-
-        // Total de números a mostrar: actual + 2*vecinos + primero + último + 2*puntos = 7 (si sibling=1)
-        const totalPageNumbers = sc * 2 + 5; 
+        const totalPageNumbers = sc * 2 + 5;
 
         if (totalPageNumbers >= t) {
             return Array.from({ length: t }, (_, i) => i + 1);
@@ -73,7 +65,6 @@ export function Pagination(props: PaginationProps): NixTemplate {
         return [];
     };
 
-    // Diccionario tipado para evitar que TypeScript se queje al acceder por el index `size`
     const sizeClasses: Record<"sm" | "md" | "lg", string> = {
         sm: "h-8 min-w-[32px] px-2 text-xs",
         md: "h-10 min-w-[40px] px-3 text-sm",
@@ -83,20 +74,20 @@ export function Pagination(props: PaginationProps): NixTemplate {
     const btnBaseClass = "cursor-pointer inline-flex items-center justify-center rounded-nix-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-nix-primary focus:ring-offset-2 select-none";
 
     return html`
-        <nav role="navigation" aria-label="Pagination Navigation" class=${cx("flex flex-wrap items-center justify-center gap-2 w-full", className)}>
+        <nav role="navigation" aria-label=${label} class=${cx("flex flex-wrap items-center justify-center gap-2 w-full", className)}>
             ${showControls ? html`
                 <button
                     class=${() => cx(
-                        btnBaseClass,
-                        sizeClasses[size],
-                        "text-nix-text hover:bg-nix-primary/10",
-                        current() === 1 ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
-                    )}
+        btnBaseClass,
+        sizeClasses[size],
+        "text-nix-text hover:bg-nix-primary/10",
+        current() === 1 ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+    )}
                     aria-label="Previous Page"
                     disabled=${() => current() === 1}
                     @click=${() => { if (current() > 1) onPageChange(current() - 1); }}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                     <span class="sr-only">Previous</span>
@@ -105,52 +96,50 @@ export function Pagination(props: PaginationProps): NixTemplate {
 
             <div class="flex flex-wrap items-center justify-center gap-1">
                 ${() => generatePages().map((page) => {
-                    // Verificación de tipo para renderizar los puntos suspensivos
-                    if (page === "...") {
-                        return html`
-                            <span class=${cx("flex items-center justify-center text-nix-text-muted tracking-widest", sizeClasses[size])}>
+        if (page === "...") {
+            return html`
+                            <span class=${cx("flex items-center justify-center text-nix-text-muted tracking-widest", sizeClasses[size])} aria-hidden="true">
                                 &hellip;
                             </span>
                         `;
-                    }
+        }
 
-                    // Forzamos el tipo a número para operar de manera segura
-                    const pageNum = page as number;
-                    const isCurrent = pageNum === current();
+        const pageNum = page as number;
+        const isCurrent = pageNum === current();
 
-                    return html`
+        return html`
                         <button
                             class=${cx(
-                                btnBaseClass,
-                                sizeClasses[size],
-                                isCurrent 
-                                    ? "bg-nix-primary text-white shadow-md hover:bg-nix-primary-hover" 
-                                    : "bg-transparent text-nix-text hover:bg-nix-primary/10 border border-transparent hover:border-nix-primary/20"
-                            )}
+            btnBaseClass,
+            sizeClasses[size],
+            isCurrent
+                ? "bg-nix-primary text-white shadow-md hover:bg-nix-primary-hover"
+                : "bg-transparent text-nix-text hover:bg-nix-primary/10 border border-transparent hover:border-nix-primary/20"
+        )}
                             aria-current=${isCurrent ? "page" : "false"}
                             @click=${() => {
-                                if (!isCurrent) onPageChange(pageNum);
-                            }}
+                if (!isCurrent) onPageChange(pageNum);
+            }}
                         >
                             ${pageNum}
                         </button>
                     `;
-                })}
+    })}
             </div>
 
             ${showControls ? html`
                 <button
                     class=${() => cx(
-                        btnBaseClass,
-                        sizeClasses[size],
-                        "text-nix-text hover:bg-nix-primary/10",
-                        current() === total() ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
-                    )}
+        btnBaseClass,
+        sizeClasses[size],
+        "text-nix-text hover:bg-nix-primary/10",
+        current() === total() ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+    )}
                     aria-label="Next Page"
                     disabled=${() => current() === total()}
                     @click=${() => { if (current() < total()) onPageChange(current() + 1); }}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                     <span class="sr-only">Next</span>

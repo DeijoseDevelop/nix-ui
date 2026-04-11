@@ -26,7 +26,7 @@ describe("Input", () => {
         mount(Input({ label: "Username" }), container);
         const label = container.querySelector("label");
         expect(label).not.toBeNull();
-        expect(label?.textContent).toBe("Username");
+        expect(label?.textContent?.trim()).toBe("Username");
     });
 
     it("binds static value", () => {
@@ -46,23 +46,23 @@ describe("Input", () => {
         const onInput = vi.fn();
         const onChange = vi.fn();
         mount(Input({ onInput, onChange }), container);
-        
+
         const input = container.querySelector("input")!;
-        
+
         input.value = "A";
         input.dispatchEvent(new Event("input", { bubbles: true }));
         expect(onInput).toHaveBeenCalledWith("A", expect.any(Event));
-        
+
         input.dispatchEvent(new Event("change", { bubbles: true }));
         expect(onChange).toHaveBeenCalledWith("A", expect.any(Event));
     });
 
     it("displays error text and classes", () => {
         mount(Input({ error: "Invalid email" }), container);
-        
+
         const input = container.querySelector("input")!;
         expect(input.className).toContain("border-nix-error");
-        
+
         const errSpan = container.querySelector("span.text-nix-error");
         expect(errSpan).not.toBeNull();
         expect(errSpan?.textContent).toBe("Invalid email");

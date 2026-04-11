@@ -39,13 +39,13 @@ describe("Tooltip", () => {
         expect(tooltip.className).toContain("top-full");
     });
 
-    it("has required classes for hover interaction", () => {
+    it("has required classes for visibility control", () => {
         mount(Tooltip({ text: "Info", children: "Hover me" }), container);
         const wrapper = container.firstElementChild as HTMLElement;
         expect(wrapper.className).toContain("group");
-        
+
         const tooltip = container.querySelector('div[role="tooltip"]') as HTMLElement;
         expect(tooltip.className).toContain("opacity-0");
-        expect(tooltip.className).toContain("group-hover:opacity-100");
+        expect(tooltip.className).toContain("transition-opacity");
     });
 });

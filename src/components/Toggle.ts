@@ -2,8 +2,6 @@ import { html, signal } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 import type { FieldState } from "@deijose/nix-js";
 
 export interface ToggleProps {
@@ -17,9 +15,10 @@ export interface ToggleProps {
     onChange?: (checked: boolean) => void;
     onBlur?: () => void;
     field?: FieldState<boolean>;
+    description?: string;
 }
 
-// ── Size maps ──────────────────────────────────────────────────────────────────
+let _toggleId = 0;
 
 const TRACK_SIZE: Record<string, string> = {
     sm: "w-8 h-4",
@@ -39,8 +38,6 @@ const THUMB_TRANSLATE: Record<string, string> = {
     lg: "translate-x-6",
 };
 
-// ── Component ──────────────────────────────────────────────────────────────────
-
 export function Toggle(props: ToggleProps): NixTemplate {
     const {
         checked = false,
@@ -53,7 +50,14 @@ export function Toggle(props: ToggleProps): NixTemplate {
         onChange,
         onBlur,
         field,
+        description,
     } = props;
+
+    const instanceId = _toggleId++;
+    const toggleId = `nix-toggle-${instanceId}`;
+    const labelId = `nix-toggle-label-${instanceId}`;
+    const errorId = `nix-toggle-error-${instanceId}`;
+    const descriptionId = `nix-toggle-description-${instanceId}`;
 
     const localChecked = signal(typeof checked === 'function' ? checked() : checked);
     const isOn = field ? (() => field.value.value) : (typeof checked === 'function' ? checked : (() => localChecked.value));
@@ -65,9 +69,8 @@ export function Toggle(props: ToggleProps): NixTemplate {
         if (!field && typeof checked !== 'function') localChecked.value = newVal;
 
         if (field) {
-            // Fake an event for useField coercion (it looks for e.target.checked or e.target.value)
             field.onInput({ target: { checked: newVal } } as unknown as Event);
-            field.onBlur(); 
+            field.onBlur();
         }
 
         onChange?.(newVal);
@@ -75,41 +78,56 @@ export function Toggle(props: ToggleProps): NixTemplate {
     };
 
     return html`
-        <div class=${cx("inline-flex items-center gap-2.5", className)} style=${style ?? ""}>
-            <button
-                type="button"
-                role="switch"
-                disabled=${disabled}
-                @click=${toggle}
-                class=${() => cx(
-                    "relative inline-flex shrink-0 rounded-full transition-colors duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-nix-primary/30 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed",
-                    TRACK_SIZE[size],
-                    isOn() ? "bg-nix-primary" : "bg-nix-border",
-                    (typeof errBind === 'function' ? errBind() : errBind) ? "ring-2 ring-nix-error/50" : ""
-                )}
-                aria-checked=${() => String(isOn())}
-            >
-                <span
-                    class=${() => cx(
-                        "inline-block rounded-full bg-white shadow-nix-sm transform transition-transform duration-200 ease-in-out mt-0.5 ml-0.5",
-                        THUMB_SIZE[size],
-                        isOn() ? THUMB_TRANSLATE[size] : "translate-x-0",
-                    )}
-                ></span>
-            </button>
-            ${label
-                ? html`<span
-                    class=${cx("text-sm select-none", disabled ? "text-nix-text-muted" : "text-nix-text")}
+        <div class=${cx("inline-flex flex-col gap-1.5", className)} style=${style ?? ""}>
+            <div class="inline-flex items-center gap-2.5">
+                <button
+                    id=${toggleId}
+                    type="button"
+                    role="switch"
+                    disabled=${disabled}
                     @click=${toggle}
-                    style="cursor: pointer;"
-                >${label}</span>`
-                : ""}
-        </div>
-        ${() => {
+                    class=${() => cx(
+        "relative inline-flex shrink-0 rounded-full transition-colors duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-nix-primary/30 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed",
+        TRACK_SIZE[size],
+        isOn() ? "bg-nix-primary" : "bg-nix-border",
+        (typeof errBind === 'function' ? errBind() : errBind) ? "ring-2 ring-nix-error/50" : ""
+    )}
+                    aria-checked=${() => String(isOn())}
+                    aria-labelledby=${label ? labelId : undefined}
+                    aria-describedby=${() => {
             const currentError = typeof errBind === 'function' ? errBind() : errBind;
-            return currentError 
-                ? html`<span class="text-xs text-nix-error mt-1">${currentError}</span>`
+            const ids = [];
+            if (description) ids.push(descriptionId);
+            if (currentError) ids.push(errorId);
+            return ids.length > 0 ? ids.join(" ") : undefined;
+        }}
+                >
+                    <span
+                        class=${() => cx(
+            "inline-block rounded-full bg-white shadow-nix-sm transform transition-transform duration-200 ease-in-out mt-0.5 ml-0.5",
+            THUMB_SIZE[size],
+            isOn() ? THUMB_TRANSLATE[size] : "translate-x-0",
+        )}
+                    ></span>
+                </button>
+                ${label
+            ? html`<span
+                        id=${labelId}
+                        class=${cx("text-sm select-none", disabled ? "text-nix-text-muted" : "text-nix-text")}
+                        @click=${toggle}
+                        style="cursor: pointer;"
+                    >${label}</span>`
+            : ""}
+            </div>
+            ${description
+            ? html`<span id=${descriptionId} class="text-xs text-nix-text-muted">${description}</span>`
+            : ""}
+            ${() => {
+            const currentError = typeof errBind === 'function' ? errBind() : errBind;
+            return currentError
+                ? html`<span id=${errorId} class="text-xs text-nix-error" role="alert">${currentError}</span>`
                 : "";
         }}
+        </div>
     `;
 }

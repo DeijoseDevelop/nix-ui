@@ -2,8 +2,6 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export interface BreadcrumbItem {
     label: string;
     href?: string;
@@ -18,7 +16,7 @@ export interface BreadcrumbProps {
     maxItems?: number;
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
+let _breadcrumbId = 0;
 
 export function Breadcrumb(props: BreadcrumbProps): NixTemplate {
     const {
@@ -28,6 +26,9 @@ export function Breadcrumb(props: BreadcrumbProps): NixTemplate {
         style,
         maxItems,
     } = props;
+
+    const instanceId = _breadcrumbId++;
+    const listId = `nix-breadcrumb-list-${instanceId}`;
 
     let displayItems = items;
     let collapsed = false;
@@ -43,34 +44,35 @@ export function Breadcrumb(props: BreadcrumbProps): NixTemplate {
 
     return html`
         <nav class=${cx("flex items-center flex-wrap text-sm", className)} style=${style ?? ""} aria-label="Breadcrumb">
-            <ol class="flex items-center flex-wrap gap-0.5">
+            <ol id=${listId} class="flex items-center flex-wrap gap-0.5">
                 ${displayItems.map((item, i) => {
-                    const isLast = i === displayItems.length - 1;
-                    const isEllipsis = item.label === "…" && collapsed;
+        const isLast = i === displayItems.length - 1;
+        const isEllipsis = item.label === "…" && collapsed;
 
-                    const content = isLast || (!item.href && !item.onClick)
-                        ? html`<span class=${cx(
-                            isLast ? "font-semibold text-nix-text" : "text-nix-text-muted",
-                            isEllipsis && "cursor-default",
-                        )}>${item.label}</span>`
-                        : html`<a
-                            href=${item.href ?? "#"}
-                            class="text-nix-text-muted hover:text-nix-primary transition-colors duration-200"
-                            @click=${(e: Event) => {
-                                if (item.onClick) {
-                                    e.preventDefault();
-                                    item.onClick();
-                                }
-                            }}
-                        >${item.label}</a>`;
+        const content = isEllipsis
+            ? html`<span class="text-nix-text-muted cursor-default" aria-label="More pages" role="presentation">${item.label}</span>`
+            : isLast
+                ? html`<span class="font-semibold text-nix-text" aria-current="page">${item.label}</span>`
+                : (!item.href && !item.onClick)
+                    ? html`<span class="text-nix-text-muted">${item.label}</span>`
+                    : html`<a
+                                    href=${item.href ?? "#"}
+                                    class="text-nix-text-muted hover:text-nix-primary transition-colors duration-200"
+                                    @click=${(e: Event) => {
+                            if (item.onClick) {
+                                e.preventDefault();
+                                item.onClick();
+                            }
+                        }}
+                                >${item.label}</a>`;
 
-                    return html`
+        return html`
                         <li class="inline-flex items-center">
                             ${i > 0 ? sep : ""}
                             ${content}
                         </li>
                     `;
-                })}
+    })}
             </ol>
         </nav>
     `;

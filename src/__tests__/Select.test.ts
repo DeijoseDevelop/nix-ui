@@ -44,7 +44,7 @@ describe("Select", () => {
         mount(Select({ options, label: "My Select" }), container);
         const label = container.querySelector("label");
         expect(label).not.toBeNull();
-        expect(label?.textContent).toBe("My Select");
+        expect(label?.textContent?.trim()).toBe("My Select");
     });
 
     it("binds static value correctly", () => {
@@ -58,11 +58,11 @@ describe("Select", () => {
     it("handles onChange", () => {
         const onChange = vi.fn();
         mount(Select({ options, onChange }), container);
-        
+
         const select = container.querySelector("select")!;
         select.value = "2";
         select.dispatchEvent(new Event("change", { bubbles: true }));
-        
+
         expect(onChange).toHaveBeenCalledWith("2", expect.any(Event));
     });
 
@@ -70,7 +70,7 @@ describe("Select", () => {
         mount(Select({ options, error: "Must select a valid option" }), container);
         const select = container.querySelector("select")!;
         expect(select.className).toContain("border-nix-error");
-        
+
         const errSpan = container.querySelector("span.text-nix-error");
         expect(errSpan).not.toBeNull();
         expect(errSpan?.textContent).toBe("Must select a valid option");

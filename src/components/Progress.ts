@@ -2,13 +2,11 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export type ProgressVariant = "primary" | "success" | "warning" | "error";
 export type ProgressSize = "sm" | "md" | "lg";
 
 export interface ProgressProps {
-    value: number | (() => number);
+    value?: number | (() => number);
     variant?: ProgressVariant;
     size?: ProgressSize;
     showLabel?: boolean;
@@ -17,9 +15,11 @@ export interface ProgressProps {
     class?: string;
     style?: string;
     label?: string | ((value: number) => string);
+    /** Accessible label describing what the progress represents */
+    ariaLabel?: string;
+    /** Whether the progress is indeterminate (unknown completion) */
+    indeterminate?: boolean;
 }
-
-// ── Size maps ──────────────────────────────────────────────────────────────────
 
 const HEIGHT: Record<ProgressSize, string> = {
     sm: "h-1.5",
@@ -41,8 +41,6 @@ const VARIANT_TRACK: Record<ProgressVariant, string> = {
     error: "bg-red-500/15",
 };
 
-// ── Component ──────────────────────────────────────────────────────────────────
-
 export function Progress(props: ProgressProps): NixTemplate {
     const {
         value,
@@ -54,9 +52,11 @@ export function Progress(props: ProgressProps): NixTemplate {
         class: className,
         style,
         label,
+        ariaLabel,
+        indeterminate = false,
     } = props;
 
-    const getVal = typeof value === "function" ? value : () => value;
+    const getVal = typeof value === "function" ? value : () => value ?? 0;
     const clamp = () => Math.max(0, Math.min(100, getVal()));
 
     const resolveLabel = () => {
@@ -80,15 +80,24 @@ export function Progress(props: ProgressProps): NixTemplate {
             </style>
         ` : ""}
         <div class=${cx("w-full", className)} style=${style ?? ""}>
-            ${showLabel ? html`
+            ${showLabel || ariaLabel ? html`
                 <div class="flex justify-between items-center mb-1.5">
-                    <span class="text-xs font-medium text-nix-text">${() => resolveLabel()}</span>
+                    ${ariaLabel ? html`<span class="sr-only">${ariaLabel}</span>` : ""}
+                    ${showLabel ? html`<span class="text-xs font-medium text-nix-text">${() => resolveLabel()}</span>` : ""}
                 </div>
             ` : ""}
-            <div class=${cx("w-full rounded-full overflow-hidden", VARIANT_TRACK[variant], HEIGHT[size])} role="progressbar" aria-valuenow=${() => String(clamp())} aria-valuemin="0" aria-valuemax="100">
+            <div
+                class=${cx("w-full rounded-full overflow-hidden", VARIANT_TRACK[variant], HEIGHT[size])}
+                role="progressbar"
+                aria-valuenow=${indeterminate ? undefined : () => String(clamp())}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label=${ariaLabel || undefined}
+                aria-busy=${indeterminate ? "true" : undefined}
+            >
                 <div
-                    class=${cx("h-full rounded-full transition-all duration-500 ease-out", VARIANT_BG[variant], animatedClass)}
-                    style=${() => `width: ${clamp()}%; ${stripedCss}`}
+                    class=${cx("h-full rounded-full transition-all duration-500 ease-out", VARIANT_BG[variant], animatedClass, indeterminate ? "animate-pulse" : "")}
+                    style=${() => indeterminate ? "width: 100%; animation: nix-progress-indeterminate 1.5s ease-in-out infinite;" : `width: ${clamp()}%; ${stripedCss}`}
                 ></div>
             </div>
         </div>

@@ -2,7 +2,6 @@ import { html, createRouter, RouterView, signal } from "@deijose/nix-js";
 import { Sidebar } from "./Sidebar";
 import { cx } from "../utils/cx";
 
-// Import pages
 import { Introduction } from "./pages/Introduction";
 import { Installation } from "./pages/Installation";
 import { CustomizationPage } from "./pages/CustomizationPage";
@@ -33,6 +32,7 @@ import { ToastPage } from "./pages/ToastPage";
 import { TogglePage } from "./pages/TogglePage";
 import { TooltipPage } from "./pages/TooltipPage";
 import { FormsPage } from "./pages/FormsPage";
+import { AccessibilityPage } from "./pages/AccessibilityPage";
 
 const routes = [
     { path: "/", component: Introduction },
@@ -65,6 +65,7 @@ const routes = [
     { path: "/toggle", component: TogglePage },
     { path: "/tooltip", component: TooltipPage },
     { path: "/forms", component: FormsPage },
+    { path: "/accessibility", component: AccessibilityPage },
 ];
 
 export const router = createRouter(routes);
@@ -113,6 +114,7 @@ const groups = [
         title: "Advanced",
         links: [
             { id: "/forms", label: "Forms & Validation" },
+            { id: "/accessibility", label: "Accessibility Utilities" },
         ]
     }
 ];

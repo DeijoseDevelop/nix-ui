@@ -2,21 +2,18 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type AvatarStatus = "online" | "offline" | "busy" | "away";
 
 export interface AvatarProps {
     src?: string;
     alt?: string;
     name?: string;
     size?: AvatarSize;
-    status?: "online" | "offline" | "busy" | "away";
+    status?: AvatarStatus;
     class?: string;
     style?: string;
 }
-
-// ── Size maps ──────────────────────────────────────────────────────────────────
 
 const SIZE: Record<AvatarSize, string> = {
     xs: "w-6 h-6 text-[10px]",
@@ -35,23 +32,18 @@ const STATUS_SIZE: Record<AvatarSize, string> = {
 };
 
 const STATUS_COLOR: Record<string, string> = {
-    online:  "bg-nix-success",
+    online: "bg-nix-success",
     offline: "bg-gray-400",
-    busy:    "bg-nix-error",
-    away:    "bg-nix-warning",
+    busy: "bg-nix-error",
+    away: "bg-nix-warning",
 };
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
-
-function getInitials(name: string): string {
-    return name
-        .split(" ")
-        .map((w) => w[0])
-        .filter(Boolean)
-        .slice(0, 2)
-        .join("")
-        .toUpperCase();
-}
+const STATUS_LABEL: Record<AvatarStatus, string> = {
+    online: "Online",
+    offline: "Offline",
+    busy: "Busy",
+    away: "Away",
+};
 
 const FALLBACK_COLORS = [
     "bg-indigo-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500",
@@ -66,7 +58,15 @@ function hashColor(name: string): string {
     return FALLBACK_COLORS[Math.abs(hash) % FALLBACK_COLORS.length];
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
+function getInitials(name: string): string {
+    return name
+        .split(" ")
+        .map((w) => w[0])
+        .filter(Boolean)
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+}
 
 export function Avatar(props: AvatarProps): NixTemplate {
     const {
@@ -81,26 +81,42 @@ export function Avatar(props: AvatarProps): NixTemplate {
 
     const base = "relative inline-flex items-center justify-center rounded-full overflow-hidden shrink-0";
 
+    // Build accessible label
+    const parts = [alt || name || "Avatar"];
+    if (status) parts.push(STATUS_LABEL[status]);
+    const accessibleLabel = parts.join(", ");
+
     return html`
-        <div class=${cx(base, SIZE[size], className)} style=${style ?? ""}>
+        <div
+            class=${cx(base, SIZE[size], className)}
+            style=${style ?? ""}
+            role="img"
+            aria-label=${accessibleLabel}
+        >
             ${src
-                ? html`<img src=${src} alt=${alt || name || ""} class="w-full h-full object-cover" />`
-                : html`
+            ? html`<img src=${src} alt=${alt || name || ""} class="w-full h-full object-cover" />`
+            : html`
                     <div class=${cx("w-full h-full flex items-center justify-center font-semibold text-white", name ? hashColor(name) : "bg-nix-secondary")}>
-                        ${name ? getInitials(name) : html`
-                            <svg class="w-1/2 h-1/2" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                        `}
+                        ${name
+                    ? getInitials(name)
+                    : html`
+                                <svg class="w-1/2 h-1/2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            `}
                     </div>
                 `}
             ${status
-                ? html`<span class=${cx(
-                    "absolute bottom-0 right-0 rounded-full ring-2 ring-nix-bg",
-                    STATUS_SIZE[size],
-                    STATUS_COLOR[status],
-                )}></span>`
-                : ""}
+            ? html`<span
+                    class=${cx(
+                "absolute bottom-0 right-0 rounded-full ring-2 ring-nix-bg",
+                STATUS_SIZE[size],
+                STATUS_COLOR[status],
+            )}
+                    aria-hidden="true"
+                    title=${STATUS_LABEL[status]}
+                ></span>`
+            : ""}
         </div>
     `;
 }

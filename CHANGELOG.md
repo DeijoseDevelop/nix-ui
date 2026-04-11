@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-04-11
+
+### Added
+- **Core Accessibility Utilities**: Introduced headless accessibility primitives in \`src/utils/a11y/\` including \`nixRovingTabindex\`, \`nixFocusTrap\`, \`nixFocusRestore\`, \`nixDismissable\`, \`nixLiveRegion\` and \`nixAriaDescribedby\`.
+- **Accessibility Docs**: Added a new _Accessibility Utilities_ page explaining the WAI-ARIA abstractions.
+
+### Changed
+- **README Redesign**: Restructured the root \`README.md\` to point users to the official site \`ui.nix-js.dev\`, cleaning up the repository entry point.
+
+### Fixed
+- **Native Keyboard Navigation**: Overhauled \`Tabs\`, \`Accordion\`, and \`Dropdown\` to use \`nixRovingTabindex\`, replacing faux visual focus with true DOM keyboard arrow navigation.
+- **Drawer Accessibility**: Fixed uninitialized focus lock in the \`Drawer\` component.
+- **Dropdown Disabled Items**: Ensured keyboard navigation properly skips \`disabled\` elements inside the \`Dropdown\` menu via css selector filtering.
+
 ## [1.2.5] - 2026-03-25
 
 ### Added

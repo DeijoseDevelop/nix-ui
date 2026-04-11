@@ -2,8 +2,6 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export type SkeletonVariant = "text" | "circular" | "rectangular";
 
 export interface SkeletonProps {
@@ -13,9 +11,9 @@ export interface SkeletonProps {
     count?: number;
     class?: string;
     style?: string;
+    /** Accessible label announced to screen readers while loading */
+    label?: string;
 }
-
-// ── Component ──────────────────────────────────────────────────────────────────
 
 export function Skeleton(props: SkeletonProps): NixTemplate {
     const {
@@ -25,6 +23,7 @@ export function Skeleton(props: SkeletonProps): NixTemplate {
         count = 1,
         class: className,
         style,
+        label = "Loading content...",
     } = props;
 
     const shimmerStyle = `
@@ -66,8 +65,9 @@ export function Skeleton(props: SkeletonProps): NixTemplate {
                 100% { background-position: -200% 0; }
             }
         </style>
-        <div class=${cx("flex flex-col", variant === "text" && "gap-2")}>
+        <div class=${cx("flex flex-col", variant === "text" && "gap-2")} role="status" aria-label=${label}>
             ${items}
+            <span class="sr-only">${label}</span>
         </div>
     `;
 }

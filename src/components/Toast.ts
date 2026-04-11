@@ -147,11 +147,11 @@ const TYPE_STYLES: Record<ToastType, {
 };
 
 const POSITION_CLASSES: Record<ToastPosition, string> = {
-    "top-right":     "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
-    "top-left":      "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
-    "top-center":    "top-4 left-1/2 -translate-x-1/2 items-center",
-    "bottom-right":  "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
-    "bottom-left":   "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
+    "top-right": "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
+    "top-left": "top-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
+    "top-center": "top-4 left-1/2 -translate-x-1/2 items-center",
+    "bottom-right": "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-4 items-center sm:items-end",
+    "bottom-left": "bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 items-center sm:items-start",
     "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center",
 };
 
@@ -161,7 +161,7 @@ function ToastCard(t: ToastItem): NixTemplate {
     const styles = TYPE_STYLES[t.type];
     const visible = signal(true);
 
-    // Auto-dismiss: set visible to false so transition plays leave animation
+    // Auto-dismiss
     if (t.duration > 0) {
         const elapsed = Date.now() - t.createdAt;
         const remaining = Math.max(0, t.duration - elapsed);
@@ -170,23 +170,27 @@ function ToastCard(t: ToastItem): NixTemplate {
         }, remaining);
     }
 
+    // Vary aria-live by type: assertive for errors/warnings, polite for info/success
+    const liveLevel = t.type === "error" || t.type === "warning" ? "assertive" : "polite";
+    const dismissLabel = t.title ? `Dismiss: ${t.title}` : "Dismiss notification";
+
     return transition(
         () =>
             visible.value
                 ? html`
                     <div
                         class=${cx(
-                            "pointer-events-auto w-full rounded-xl bg-white border border-gray-100 border-l-[3px] overflow-hidden",
-                            styles.accent,
-                        )}
+                    "pointer-events-auto w-full rounded-xl bg-white border border-gray-100 border-l-[3px] overflow-hidden",
+                    styles.accent,
+                )}
                         style="box-shadow: 0 4px 24px -4px rgba(0,0,0,0.12), 0 8px 16px -8px rgba(0,0,0,0.08);"
                         role="alert"
-                        aria-live="assertive"
+                        aria-live=${liveLevel}
                     >
                         <div class="flex items-start gap-3 px-4 py-3.5">
                             <!-- Icon with colored background -->
                             <div class=${cx("flex items-center justify-center w-8 h-8 rounded-lg shrink-0", styles.iconBg)}>
-                                <svg class=${cx("w-4.5 h-4.5", styles.iconColor)} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class=${cx("w-4.5 h-4.5", styles.iconColor)} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     ${html`<g>${styles.iconSvg}</g>`}
                                 </svg>
                             </div>
@@ -194,43 +198,43 @@ function ToastCard(t: ToastItem): NixTemplate {
                             <!-- Content -->
                             <div class="flex-1 min-w-0 pt-0.5">
                                 ${t.title
-                                    ? html`<p class="text-[13px] font-semibold text-gray-900 leading-tight">${t.title}</p>`
-                                    : ""}
+                        ? html`<p class="text-[13px] font-semibold text-gray-900 leading-tight">${t.title}</p>`
+                        : ""}
                                 <p class=${cx(
-                                    "text-[13px] leading-snug",
-                                    t.title ? "text-gray-500 mt-0.5" : "text-gray-700 font-medium",
-                                )}>
+                            "text-[13px] leading-snug",
+                            t.title ? "text-gray-500 mt-0.5" : "text-gray-700 font-medium",
+                        )}>
                                     ${t.message}
                                 </p>
                             </div>
 
                             <!-- Close button -->
                             ${t.dismissible
-                                ? html`
+                        ? html`
                                     <button
                                         @click=${() => {
-                                            visible.value = false;
-                                            setTimeout(() => dismissToast(t.id), 350);
-                                        }}
+                                visible.value = false;
+                                setTimeout(() => dismissToast(t.id), 350);
+                            }}
                                         class="shrink-0 p-1 -mr-1 -mt-0.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-150 cursor-pointer"
-                                        aria-label="Close"
+                                        aria-label=${dismissLabel}
                                     >
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                                         </svg>
                                     </button>
                                 `
-                                : ""}
+                        : ""}
                         </div>
 
                         <!-- Progress bar -->
                         ${t.duration > 0
-                            ? html`
+                        ? html`
                                   <div class="h-[2px] w-full bg-gray-50">
                                       <div class=${cx("nix-toast-progress-bar h-full rounded-full opacity-80", styles.progressColor)}></div>
                                   </div>
                               `
-                            : ""}
+                        : ""}
                     </div>
                 `
                 : null,
@@ -249,7 +253,6 @@ function ToastCard(t: ToastItem): NixTemplate {
                 }
             },
             onAfterLeave: () => {
-                // Clean up from the array after animation finishes
                 dismissToast(t.id);
             },
         },
@@ -264,16 +267,16 @@ export class ToastContainer extends NixComponent {
         return portal(
             html`
                 <div class=${() => cx(
-                    "fixed z-[9999] flex flex-col gap-3 w-[calc(100vw-2rem)] sm:w-[380px] pointer-events-none",
-                    POSITION_CLASSES[_defaultPosition],
-                )}>
+                "fixed z-[9999] flex flex-col gap-3 w-[calc(100vw-2rem)] sm:w-[380px] pointer-events-none",
+                POSITION_CLASSES[_defaultPosition],
+            )}>
                     ${() =>
-                        repeat(
-                            toasts.value,
-                            (t) => t.id,
-                            (t) => ToastCard(t),
-                        )
-                    }
+                    repeat(
+                        toasts.value,
+                        (t) => t.id,
+                        (t) => ToastCard(t),
+                    )
+                }
                 </div>
             `,
         );

@@ -2,8 +2,6 @@ import { html } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export type SpinnerSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SpinnerVariant = "border" | "dots" | "pulse";
 
@@ -15,8 +13,6 @@ export interface SpinnerProps {
     class?: string;
     style?: string;
 }
-
-// ── Size maps ──────────────────────────────────────────────────────────────────
 
 const BORDER_SIZE: Record<SpinnerSize, string> = {
     xs: "w-3 h-3 border",
@@ -50,8 +46,6 @@ const PULSE_SIZE: Record<SpinnerSize, string> = {
     xl: "w-12 h-12",
 };
 
-// ── Component ──────────────────────────────────────────────────────────────────
-
 export function Spinner(props: SpinnerProps = {}): NixTemplate {
     const {
         size = "md",
@@ -67,9 +61,9 @@ export function Spinner(props: SpinnerProps = {}): NixTemplate {
     if (variant === "dots") {
         return html`
             <div class=${cx("inline-flex items-center", DOT_GAP[size], className)} style=${style ?? ""} role="status" aria-label=${label ?? "Loading"}>
-                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 0ms;"></span>
-                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 150ms;"></span>
-                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 300ms;"></span>
+                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 0ms;" aria-hidden="true"></span>
+                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 150ms;" aria-hidden="true"></span>
+                <span class=${cx("rounded-full animate-nix-pulse", DOT_SIZE[size], colorClass, "bg-current")} style="animation-delay: 300ms;" aria-hidden="true"></span>
                 ${label ? html`<span class="sr-only">${label}</span>` : ""}
             </div>
         `;
@@ -78,7 +72,7 @@ export function Spinner(props: SpinnerProps = {}): NixTemplate {
     if (variant === "pulse") {
         return html`
             <div class=${cx("inline-block", className)} style=${style ?? ""} role="status" aria-label=${label ?? "Loading"}>
-                <span class=${cx("block rounded-full animate-nix-pulse", PULSE_SIZE[size], colorClass, "bg-current opacity-75")}></span>
+                <span class=${cx("block rounded-full animate-nix-pulse", PULSE_SIZE[size], colorClass, "bg-current opacity-75")} aria-hidden="true"></span>
                 ${label ? html`<span class="sr-only">${label}</span>` : ""}
             </div>
         `;
@@ -88,10 +82,10 @@ export function Spinner(props: SpinnerProps = {}): NixTemplate {
     return html`
         <div class=${cx("inline-flex items-center gap-2", className)} style=${style ?? ""} role="status" aria-label=${label ?? "Loading"}>
             <span class=${cx(
-                "inline-block rounded-full border-current border-t-transparent animate-nix-spin",
-                BORDER_SIZE[size],
-                colorClass,
-            )}></span>
+        "inline-block rounded-full border-current border-t-transparent animate-nix-spin",
+        BORDER_SIZE[size],
+        colorClass,
+    )} aria-hidden="true"></span>
             ${label ? html`<span class="text-sm text-nix-text-muted">${label}</span>` : ""}
         </div>
     `;

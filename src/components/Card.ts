@@ -9,6 +9,8 @@ export interface CardProps {
     class?: string;
     style?: string;
     children: NixUIChildren;
+    /** Accessible label when Card is used as a landmark */
+    ariaLabel?: string;
 }
 
 export interface CardHeaderProps {
@@ -29,7 +31,7 @@ export interface CardFooterProps {
 // ── Components ─────────────────────────────────────────────────────────────────
 
 export function Card(props: CardProps): NixTemplate {
-    const { class: className, style, children } = props;
+    const { class: className, style, children, ariaLabel } = props;
 
     const classes = cx(
         "rounded-nix-lg border border-nix-border bg-nix-bg shadow-nix-sm overflow-hidden",
@@ -37,7 +39,7 @@ export function Card(props: CardProps): NixTemplate {
     );
 
     return html`
-        <div class=${classes} style=${style ?? ""}>
+        <div class=${classes} style=${style ?? ""} aria-label=${ariaLabel || undefined}>
             ${children}
         </div>
     `;

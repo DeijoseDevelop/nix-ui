@@ -56,32 +56,159 @@
 /* ── Keyframes ──────────────────────────────────────────────────────────────── */
 
 @keyframes nix-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes nix-slide-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes nix-slide-right {
-    from { opacity: 0; transform: translateX(100%); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes nix-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes nix-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 @keyframes nix-toast-progress {
-    from { width: 100%; }
-    to   { width: 0%; }
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+/* ── Accessibility Utilities ─────────────────────────────────────────────── */
+
+/* Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Remove sr-only on focus (for skip links) */
+.sr-only-focusable:not(:focus):not(:focus-within) {
+    @extend .sr-only;
+}
+
+/* ── Focus Visible Styles ─────────────────────────────────────────────────── */
+
+/* Enhanced focus styles for better visibility */
+*:focus-visible {
+    outline: 2px solid var(--color-nix-primary);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+    outline: 2px solid var(--color-nix-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-nix-primary/20);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: none;
+}
+
+/* Remove default outline for mouse users */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* ── Skip Link (for keyboard navigation) ─────────────────────────────────── */
+
+.skip-link {
+    @extend .sr-only;
+}
+
+.skip-link:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background-color: var(--color-nix-bg);
+    color: var(--color-nix-text);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-nix-md);
+}
+
+/* ── Reduced Motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ── High Contrast Mode ──────────────────────────────────────────────────── */
+
+@media (prefers-contrast: more) {
+    :root {
+        --color-nix-border: #000000;
+        --color-nix-text-muted: #000000;
+    }
 }
 
 /* ── Nix.js transition() classes ───────────────────────────────────────────── */
@@ -91,10 +218,12 @@
 .fade-leave-to {
     opacity: 0;
 }
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.2s ease-out;
 }
+
 .fade-enter-to,
 .fade-leave-from {
     opacity: 1;
@@ -105,11 +234,13 @@
 .modal-leave-to .nix-modal-backdrop {
     opacity: 0;
 }
+
 .modal-enter-active .nix-modal-backdrop,
 .modal-leave-active .nix-modal-backdrop {
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 }
+
 .modal-enter-to .nix-modal-backdrop,
 .modal-leave-from .nix-modal-backdrop {
     opacity: 1;
@@ -120,11 +251,13 @@
     opacity: 0;
     transform: scale(0.95);
 }
+
 .modal-enter-active .nix-modal-panel,
 .modal-leave-active .nix-modal-panel {
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
 }
+
 .modal-enter-to .nix-modal-panel,
 .modal-leave-from .nix-modal-panel {
     opacity: 1;
@@ -140,7 +273,7 @@
 
 .toast-enter-active {
     transition: opacity 0.3s cubic-bezier(0.21, 1.02, 0.73, 1),
-                transform 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+        transform 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
 }
 
 .toast-enter-to {
@@ -317,7 +450,7 @@ code:not(pre code) {
     border-radius: var(--radius-nix-xl) var(--radius-nix-xl) 0 0;
     background-color: var(--color-nix-bg);
     background-image: linear-gradient(to right, var(--color-nix-surface) 1px, transparent 1px),
-                      linear-gradient(to bottom, var(--color-nix-surface) 1px, transparent 1px);
+        linear-gradient(to bottom, var(--color-nix-surface) 1px, transparent 1px);
     background-size: 20px 20px;
     display: flex;
     justify-content: center;
@@ -351,20 +484,20 @@ code:not(pre code) {
     right: 1rem;
     padding: 0.5rem 0.875rem;
     border-radius: var(--radius-nix-md);
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.05);
     color: #8b949e;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     backdrop-filter: blur(4px);
 }
 
 .copy-button:hover {
-    background-color: rgba(255,255,255,0.12);
+    background-color: rgba(255, 255, 255, 0.12);
     color: #ffffff;
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .prop-table {
@@ -570,4 +703,3 @@ code:not(pre code) {
         padding: 1.5rem !important;
     }
 }
-

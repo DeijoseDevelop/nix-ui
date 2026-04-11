@@ -2,6 +2,7 @@ import { html, signal } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import type { NixUIChildren } from "../utils/types";
 import { cx } from "../utils/cx";
+import { nixRovingTabindex } from "../utils/a11y/index";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -21,9 +22,13 @@ export interface TabsProps {
     class?: string;
     style?: string;
     onChange?: (key: string) => void;
+    /** Accessible label for the tablist */
+    label?: string;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
+
+let _tabsId = 0;
 
 export function Tabs(props: TabsProps): NixTemplate {
     const {
@@ -33,14 +38,24 @@ export function Tabs(props: TabsProps): NixTemplate {
         class: className,
         style,
         onChange,
+        label,
     } = props;
+
+    const instanceId = _tabsId++;
+    const tablistId = `nix-tablist-${instanceId}`;
 
     const activeKey = signal(defaultTab ?? tabs[0]?.key ?? "");
 
     const setTab = (key: string) => {
+        const tab = tabs.find((t) => t.key === key);
+        if (tab?.disabled) return;
+
         activeKey.value = key;
         onChange?.(key);
     };
+
+    const getTabId = (tab: TabItem) => `nix-tab-${instanceId}-${tab.key}`;
+    const getPanelId = (tab: TabItem) => `nix-tabpanel-${instanceId}-${tab.key}`;
 
     // Tab button styles by variant
     const getTabClass = (tab: TabItem) => {
@@ -83,30 +98,68 @@ export function Tabs(props: TabsProps): NixTemplate {
         variant === "bordered" && "border-b border-nix-border gap-0",
     );
 
+    setTimeout(() => {
+        const listEl = document.getElementById(tablistId);
+        if (listEl) {
+            const roving = nixRovingTabindex({
+                container: listEl,
+                itemSelector: "button[role='tab']",
+                orientation: "horizontal"
+            });
+            roving.activate();
+        }
+    }, 0);
+
     return html`
         <div class=${cx("w-full", className)} style=${style ?? ""}>
-            <div class=${listClass} role="tablist">
-                ${tabs.map(
-                    (tab) => html`
+            <div
+                id=${tablistId}
+                class=${listClass}
+                role="tablist"
+                aria-label=${label || "Tabs"}
+                aria-orientation="horizontal"
+            >
+                ${tabs.map((tab) => {
+        const tabId = getTabId(tab);
+        const panelId = getPanelId(tab);
+        const isActive = () => activeKey.value === tab.key;
+
+        return html`
                         <button
+                            id=${tabId}
                             type="button"
                             role="tab"
                             class=${getTabClass(tab)}
                             disabled=${tab.disabled ?? false}
-                            @click=${() => !tab.disabled && setTab(tab.key)}
-                            aria-selected=${() => (activeKey.value === tab.key).toString()}
+                            @click=${() => setTab(tab.key)}
+                            aria-selected=${() => isActive().toString()}
+                            aria-controls=${panelId}
+                            aria-labelledby=${tabId}
+                            tabindex=${() => isActive() ? "0" : "-1"}
                         >
                             ${tab.label}
                         </button>
-                    `,
-                )}
+                    `;
+    })}
             </div>
-            <div class="pt-4" role="tabpanel">
-                ${() => {
-                    const active = tabs.find((t) => t.key === activeKey.value);
-                    return active ? active.content() : "";
-                }}
-            </div>
+            ${tabs.map((tab) => {
+        const panelId = getPanelId(tab);
+        const tabId = getTabId(tab);
+        const isActive = () => activeKey.value === tab.key;
+
+        return html`
+                    <div
+                        id=${panelId}
+                        class="pt-4"
+                        role="tabpanel"
+                        aria-labelledby=${tabId}
+                        tabindex="0"
+                        show=${isActive}
+                    >
+                        ${() => isActive() ? tab.content() : ""}
+                    </div>
+                `;
+    })}
         </div>
     `;
 }
