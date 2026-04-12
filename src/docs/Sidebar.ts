@@ -1,4 +1,4 @@
-import { html, useRouter } from "@deijose/nix-js";
+import { html, nixRouter } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { cx } from "../utils/cx";
 
@@ -13,7 +13,7 @@ interface NavGroup {
 }
 
 export function Sidebar(groups: NavGroup[], isOpen?: () => boolean, onClose?: () => void): NixTemplate {
-    const router = useRouter();
+    const router = nixRouter();
 
     return html`
         <aside class=${() => cx("sidebar", isOpen?.() && "open")}>
@@ -22,11 +22,11 @@ export function Sidebar(groups: NavGroup[], isOpen?: () => boolean, onClose?: ()
                     href="/" 
                     class="sidebar-title"
                     @click=${(e: Event) => {
-                        e.preventDefault();
-                        router.navigate("/");
-                        window.scrollTo(0, 0);
-                        onClose?.();
-                    }}
+            e.preventDefault();
+            router.navigate("/");
+            window.scrollTo(0, 0);
+            onClose?.();
+        }}
                 >
                     <img src="/images/ico/favicon-96x96.png" alt="Nix.js Logo" class="sidebar-logo-img">
                     <span>Nix UI</span>
@@ -46,11 +46,11 @@ export function Sidebar(groups: NavGroup[], isOpen?: () => boolean, onClose?: ()
                                 <a 
                                     class=${() => cx("sidebar-link", router.isActive(link.id) && "active")}
                                     @click=${(e: Event) => {
-                                        e.preventDefault();
-                                        router.navigate(link.id);
-                                        window.scrollTo(0, 0);
-                                        onClose?.();
-                                    }}
+                e.preventDefault();
+                router.navigate(link.id);
+                window.scrollTo(0, 0);
+                onClose?.();
+            }}
                                     href=${link.id}
                                 >
                                     ${link.label}

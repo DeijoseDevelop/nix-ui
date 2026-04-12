@@ -1,4 +1,4 @@
-import { html, signal, createForm, useField, useFieldArray, validators } from "@deijose/nix-js";
+import { html, signal, createForm, nixField, nixFieldArray, validators } from "@deijose/nix-js";
 import type { NixTemplate } from "@deijose/nix-js";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -37,11 +37,11 @@ export function FormsPage(): NixTemplate {
         form.reset();
     });
 
-    // ── Standalone useField Demo ───────────────────────────────────────────
-    const singleField = useField("", [required("This field is required"), minLength(5)]);
+    // ── Standalone nixField Demo ───────────────────────────────────────────
+    const singleField = nixField("", [required("This field is required"), minLength(5)]);
 
-    // ── useFieldArray Demo ─────────────────────────────────────────────────
-    const teamMembers = useFieldArray<{ name: string; email: string }>(
+    // ── nixFieldArray Demo ─────────────────────────────────────────────────
+    const teamMembers = nixFieldArray<{ name: string; email: string }>(
         [{ name: "", email: "" }],
         {
             name: [required("Name is required")],
@@ -52,7 +52,7 @@ export function FormsPage(): NixTemplate {
     return html`
         <div class="doc-container animate-nix-fade-in">
             <h1 class="doc-h1">Forms & Validation</h1>
-            <p class="doc-lead">Complete reactive forms using <code>createForm</code>, <code>useField</code>, and <code>useFieldArray</code>.</p>
+            <p class="doc-lead">Complete reactive forms using <code>createForm</code>, <code>nixField</code>, and <code>nixFieldArray</code>.</p>
 
             <!-- ── createForm ──────────────────────────────────────────── -->
             <h2 class="doc-h2">createForm()</h2>
@@ -61,44 +61,44 @@ export function FormsPage(): NixTemplate {
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 mb-12">
                 <div class="p-6 border rounded-nix-xl bg-nix-bg shadow-nix-md">
                     <form @submit=${onSubmit} class="space-y-4">
-                        ${Input({ 
-                            label: "Full Name", 
-                            placeholder: "Joe Doe",
-                            field: form.fields.name 
-                        })}
-                        ${Input({ 
-                            label: "Email Address", 
-                            type: "email",
-                            placeholder: "joe@example.com",
-                            field: form.fields.email 
-                        })}
+                        ${Input({
+        label: "Full Name",
+        placeholder: "Joe Doe",
+        field: form.fields.name
+    })}
+                        ${Input({
+        label: "Email Address",
+        type: "email",
+        placeholder: "joe@example.com",
+        field: form.fields.email
+    })}
                         ${Select({
-                            label: "User Role",
-                            field: form.fields.role,
-                            options: [
-                                { value: "user", label: "Standard User" },
-                                { value: "admin", label: "Administrator" },
-                                { value: "editor", label: "Content Editor" },
-                            ]
-                        })}
+        label: "User Role",
+        field: form.fields.role,
+        options: [
+            { value: "user", label: "Standard User" },
+            { value: "admin", label: "Administrator" },
+            { value: "editor", label: "Content Editor" },
+        ]
+    })}
                         ${Textarea({
-                            label: "Biography",
-                            placeholder: "Tell us about yourself...",
-                            field: form.fields.bio
-                        })}
+        label: "Biography",
+        placeholder: "Tell us about yourself...",
+        field: form.fields.bio
+    })}
                         ${Checkbox({
-                            label: "I agree to the Terms of Service",
-                            field: form.fields.terms
-                        })}
+        label: "I agree to the Terms of Service",
+        field: form.fields.terms
+    })}
                         
                         <div class="pt-4">
-                            ${Button({ 
-                                type: "submit", 
-                                variant: "primary", 
-                                class: "w-full",
-                                loading: isSubmitting,
-                                children: "Register Account" 
-                            })}
+                            ${Button({
+        type: "submit",
+        variant: "primary",
+        class: "w-full",
+        loading: isSubmitting,
+        children: "Register Account"
+    })}
                         </div>
                     </form>
                 </div>
@@ -140,8 +140,8 @@ const onSubmit = form.handleSubmit(async (values) => { ... });
                 </div>
             </div>
 
-            <!-- ── useField ────────────────────────────────────────────── -->
-            <h2 class="doc-h2">useField()</h2>
+            <!-- ── nixField ────────────────────────────────────────────── -->
+            <h2 class="doc-h2">nixField()</h2>
             <p class="doc-p">Creates a standalone reactive field — useful when you need a single validated input without a full form.</p>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 mb-12">
@@ -154,9 +154,9 @@ const onSubmit = form.handleSubmit(async (values) => { ... });
                     </div>
                 </div>
                 <div class="p-4 bg-nix-surface rounded-nix-lg border shadow-nix-sm self-start">
-                    <pre class="text-[10px] text-nix-text"><code>import { useField, validators } from "@deijose/nix-js";
+                    <pre class="text-[10px] text-nix-text"><code>import { nixField, validators } from "@deijose/nix-js";
 
-const field = useField("", [
+const field = nixField("", [
     validators.required("Required"),
     validators.minLength(5),
 ]);
@@ -165,49 +165,49 @@ Input({ label: "Name", field })</code></pre>
                 </div>
             </div>
 
-            <!-- ── useFieldArray ───────────────────────────────────────── -->
-            <h2 class="doc-h2">useFieldArray()</h2>
+            <!-- ── nixFieldArray ───────────────────────────────────────── -->
+            <h2 class="doc-h2">nixFieldArray()</h2>
             <p class="doc-p">Manages dynamic lists of field groups with <code>append</code>, <code>remove</code>, <code>move</code>, and <code>replace</code> operations.</p>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 mb-12">
                 <div class="p-6 border rounded-nix-xl bg-nix-bg shadow-nix-md space-y-4">
                     <h4 class="font-bold text-sm text-nix-text">Team Members</h4>
-                    ${() => teamMembers.fields.value.map((member, i) => html`
+                    ${() => teamMembers.fields.value.map((member: any, i: number) => html`
                         <div class="flex gap-3 items-start p-3 bg-nix-surface rounded-nix-lg border">
                             <div class="flex-1 space-y-3">
                                 ${Input({ label: "Name", placeholder: "Member name", field: member.name })}
                                 ${Input({ label: "Email", type: "email", placeholder: "member@team.com", field: member.email })}
                             </div>
                             ${Button({
-                                variant: "ghost",
-                                size: "sm",
-                                children: "✕",
-                                onClick: () => teamMembers.remove(i),
-                            })}
+        variant: "ghost",
+        size: "sm",
+        children: "✕",
+        onClick: () => teamMembers.remove(i),
+    })}
                         </div>
                     `)}
                     <div class="flex gap-2">
                         ${Button({
-                            variant: "outline",
-                            size: "sm",
-                            children: "+ Add Member",
-                            onClick: () => teamMembers.append({ name: "", email: "" }),
-                        })}
+        variant: "outline",
+        size: "sm",
+        children: "+ Add Member",
+        onClick: () => teamMembers.append({ name: "", email: "" }),
+    })}
                         ${Button({
-                            variant: "ghost",
-                            size: "sm",
-                            children: "Reset",
-                            onClick: () => teamMembers.reset(),
-                        })}
+        variant: "ghost",
+        size: "sm",
+        children: "Reset",
+        onClick: () => teamMembers.reset(),
+    })}
                     </div>
                     <div class="text-xs text-nix-text-muted">
                         Count: <span class="font-mono font-bold text-nix-primary">${() => String(teamMembers.length.value)}</span>
                     </div>
                 </div>
                 <div class="p-4 bg-nix-surface rounded-nix-lg border shadow-nix-sm self-start">
-                    <pre class="text-[10px] text-nix-text"><code>import { useFieldArray, validators } from "@deijose/nix-js";
+                    <pre class="text-[10px] text-nix-text"><code>import { nixFieldArray, validators } from "@deijose/nix-js";
 
-const members = useFieldArray(
+const members = nixFieldArray(
     [{ name: "", email: "" }],
     {
         name: [validators.required("Required")],
