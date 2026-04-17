@@ -7,9 +7,13 @@ import { PropTable } from "../PropTable";
 export function BreadcrumbPage(): NixTemplate {
     return html`
         <div class="doc-container animate-nix-fade-in">
-            <h1 class="doc-h1">Breadcrumb</h1>
-            <p class="doc-lead">Navigation breadcrumbs to show the current location in a hierarchy.</p>
-            
+            <h1 class="doc-h1">
+                Breadcrumb
+            </h1>
+            <p class="doc-lead">
+                Navigation breadcrumbs to show the current location in a hierarchy.
+            </p>
+
             ${Usage({
                 title: "Basic Usage",
                 demo: html`
@@ -24,12 +28,12 @@ export function BreadcrumbPage(): NixTemplate {
                     </div>
                 `,
                 code: `Breadcrumb({
-    items: [
-        { label: "Home", href: "/" },
-        { label: "Products", href: "/products" },
-        { label: "Electronics" },
-    ]
-})`
+                                items: [
+                                    { label: "Home", href: "/" },
+                                    { label: "Products", href: "/products" },
+                                    { label: "Electronics" },
+                                ]
+                            })`
             })}
 
             ${Usage({
@@ -42,7 +46,7 @@ export function BreadcrumbPage(): NixTemplate {
                                 { label: "Settings", href: "#" },
                                 { label: "Profile" },
                             ],
-                            separator: "›",
+                            separator: "›"
                         })}
                         ${Breadcrumb({
                             items: [
@@ -50,7 +54,7 @@ export function BreadcrumbPage(): NixTemplate {
                                 { label: "Users", href: "#" },
                                 { label: "Edit" },
                             ],
-                            separator: "→",
+                            separator: "→"
                         })}
                     </div>
                 `,
@@ -72,11 +76,28 @@ export function BreadcrumbPage(): NixTemplate {
                 code: `Breadcrumb({ items: [...5 items], maxItems: 3 })`
             })}
 
-            <h2 class="doc-h2">API Reference</h2>
+            <h2 class="doc-h2">
+                API Reference
+            </h2>
             ${PropTable([
-                { name: "items", type: "BreadcrumbItem[]", default: "required", description: "Array of { label, href?, onClick? }." },
-                { name: "separator", type: "string | NixTemplate", default: "'/'", description: "Separator between items." },
-                { name: "maxItems", type: "number", default: "undefined", description: "Collapse middle items with '…' when exceeded." },
+                {
+                    name: "items",
+                    type: "BreadcrumbItem[]",
+                    default: "required",
+                    description: "Array of { label, href?, onClick? }."
+                },
+                {
+                    name: "separator",
+                    type: "string | NixTemplate",
+                    default: "'/'",
+                    description: "Separator between items."
+                },
+                {
+                    name: "maxItems",
+                    type: "number",
+                    default: "undefined",
+                    description: "Collapse middle items with '…' when exceeded."
+                }
             ])}
         </div>
     `;
