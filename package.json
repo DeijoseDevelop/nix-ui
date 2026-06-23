@@ -1,73 +1,73 @@
 {
-    "name": "@deijose/nix-ui",
-    "version": "1.3.6",
-    "description": "A component library for Nix.js — Tailwind CSS powered with vanilla CSS escape hatch.",
-    "keywords": [
-        "ui",
-        "components",
-        "nix-js",
-        "tailwind",
-        "framework"
-    ],
-    "author": "Deiver Vasquez",
-    "license": "MIT",
-    "type": "module",
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./dist/lib/index.d.ts",
-                "default": "./dist/lib/nix-ui.js"
-            },
-            "require": {
-                "types": "./dist/lib/index.d.ts",
-                "default": "./dist/lib/nix-ui.cjs"
-            }
-        },
-        "./styles": "./dist/lib/style.css"
+  "name": "@deijose/nix-ui",
+  "version": "1.3.7",
+  "description": "A component library for Nix.js \u2014 Tailwind CSS powered with vanilla CSS escape hatch.",
+  "keywords": [
+    "ui",
+    "components",
+    "nix-js",
+    "tailwind",
+    "framework"
+  ],
+  "author": "Deiver Vasquez",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/lib/index.d.ts",
+        "default": "./dist/lib/nix-ui.js"
+      },
+      "require": {
+        "types": "./dist/lib/index.d.ts",
+        "default": "./dist/lib/nix-ui.cjs"
+      }
     },
-    "main": "./dist/lib/nix-ui.cjs",
-    "module": "./dist/lib/nix-ui.js",
-    "types": "./dist/lib/index.d.ts",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/DeijoseDevelop/nix-ui.git"
-    },
-    "bugs": {
-        "url": "https://github.com/DeijoseDevelop/nix-ui/issues"
-    },
-    "homepage": "https://ui.nix-js.dev/",
-    "files": [
-        "dist/lib",
-        "!dist/lib/*.map",
-        "LICENSE"
-    ],
-    "sideEffects": [
-        "*.css"
-    ],
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc --noEmit && vite build",
-        "build:lib": "vite build --config vite.lib.config.ts && tsc --project tsconfig.lib.json && terser dist/lib/nix-ui.js -c -m -o dist/lib/nix-ui.js && terser dist/lib/nix-ui.cjs -c -m -o dist/lib/nix-ui.cjs",
-        "preview": "vite preview",
-        "typecheck": "tsc --noEmit",
-        "test": "vitest run",
-        "prepublishOnly": "bun run build:lib && cp README.md .readme-full.md && cp .readme-npm.md README.md",
-        "postpublish": "mv .readme-full.md README.md"
-    },
-    "peerDependencies": {
-        "@deijose/nix-js": ">=2.3.0"
-    },
-    "dependencies": {
-        "@deijose/nix-js": "^2.5.2",
-        "@types/node": "^25.4.0"
-    },
-    "devDependencies": {
-        "@tailwindcss/vite": "^4.2.1",
-        "happy-dom": "^20.8.3",
-        "tailwindcss": "^4.2.1",
-        "terser": "^5.46.0",
-        "typescript": "~5.9.3",
-        "vite": "^8.0.0",
-        "vitest": "^4.0.18"
-    }
+    "./styles": "./dist/lib/style.css"
+  },
+  "main": "./dist/lib/nix-ui.cjs",
+  "module": "./dist/lib/nix-ui.js",
+  "types": "./dist/lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeijoseDevelop/nix-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DeijoseDevelop/nix-ui/issues"
+  },
+  "homepage": "https://ui.nix-js.dev/",
+  "files": [
+    "dist/lib",
+    "!dist/lib/*.map",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc --project tsconfig.lib.json && terser dist/lib/nix-ui.js -c -m -o dist/lib/nix-ui.js && terser dist/lib/nix-ui.cjs -c -m -o dist/lib/nix-ui.cjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "bun run build:lib && cp README.md .readme-full.md && cp .readme-npm.md README.md",
+    "postpublish": "mv .readme-full.md README.md"
+  },
+  "peerDependencies": {
+    "@deijose/nix-js": "^2.5.3"
+  },
+  "dependencies": {
+    "@deijose/nix-js": "^2.5.3",
+    "@types/node": "^25.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "happy-dom": "^20.8.3",
+    "tailwindcss": "^4.2.1",
+    "terser": "^5.46.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.0.18"
+  }
 }
